@@ -28,6 +28,13 @@ public class GetQuestionTypeHandler : ICommandHandler<GetQuestionTypeCommand,Get
             return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200, "Question types retrieved"));
         }
         questionType = await _questionTypeService.GetAsync(command.Id!.Value);
-        return questionType is null ? new GetQuestionTypeResponse(new Result(false, null, null, 404, "Question type not found")) : new GetQuestionTypeResponse(new Result(true, null, questionType, 200, "Question type retrieved"));
+        if (command.Id is not null || command.SearchTerm is not null)
+            return questionType is null
+                ? new GetQuestionTypeResponse(new Result(false, null, null, 404, "Question type not found"))
+                : new GetQuestionTypeResponse(new Result(true, null, questionType, 200, "Question type retrieved"));
+        {
+            var questionTypes = await _questionTypeService.GetAllAsync( (int)command.PageNumber, (int)command.PageSize);
+            return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200, "Question types retrieved"));
+        }
     }
 }
