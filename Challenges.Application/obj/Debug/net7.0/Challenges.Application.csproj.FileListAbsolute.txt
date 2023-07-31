@@ -1,0 +1,17 @@
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Application.deps.json
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Application.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Application.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Domain.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Persistence.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Domain.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\bin\Debug\net7.0\Challenges.Persistence.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.csproj.AssemblyReference.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.AssemblyInfoInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.AssemblyInfo.cs
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.csproj.CoreCompileInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.csproj.CopyComplete
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\refint\Challenges.Application.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\Challenges.Application.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Application\obj\Debug\net7.0\ref\Challenges.Application.dll

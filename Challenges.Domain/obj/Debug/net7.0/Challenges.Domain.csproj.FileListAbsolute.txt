@@ -1,0 +1,12 @@
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\bin\Debug\net7.0\Challenges.Domain.deps.json
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\bin\Debug\net7.0\Challenges.Domain.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\bin\Debug\net7.0\Challenges.Domain.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.csproj.AssemblyReference.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.AssemblyInfoInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.AssemblyInfo.cs
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.csproj.CoreCompileInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\refint\Challenges.Domain.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\Challenges.Domain.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Domain\obj\Debug\net7.0\ref\Challenges.Domain.dll

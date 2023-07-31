@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FastEndpoints" Version="5.14.0" />
+      <PackageReference Include="FastEndpoints.Security" Version="5.14.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Challenges.Domain\Challenges.Domain.csproj" />
+      <ProjectReference Include="..\Challenges.Persistence\Challenges.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

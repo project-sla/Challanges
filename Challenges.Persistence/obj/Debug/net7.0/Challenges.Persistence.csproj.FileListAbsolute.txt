@@ -1,0 +1,17 @@
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Persistence.deps.json
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Persistence.runtimeconfig.json
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Persistence.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Persistence.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Domain.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\bin\Debug\net7.0\Challenges.Domain.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.csproj.AssemblyReference.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.AssemblyInfoInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.AssemblyInfo.cs
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.csproj.CopyComplete
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\refint\Challenges.Persistence.dll
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.pdb
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\Challenges.Persistence.genruntimeconfig.cache
+C:\Users\alper\source\repos\dotnet\Challanges\Challenges.Persistence\obj\Debug\net7.0\ref\Challenges.Persistence.dll
