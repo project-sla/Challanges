@@ -145,7 +145,7 @@ public class SurveyService : ISurveyService
         return await _context.Surveys.ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, bool includeQuestions = false, bool includeTags = false,
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take,bool includeQuestions = false, bool includeTags = false,
         bool includeGenres = false)
     {
         var query = _context.Surveys.AsQueryable();
@@ -164,15 +164,10 @@ public class SurveyService : ISurveyService
             query = query.Include(x => x.Genres);
         }
 
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            query = query.Where(x => x.Content != null && x.Content.Contains(search));
-        }
-
         return await query.Skip(skip).Take(take).ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, string? tag, bool includeQuestions = false,
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, bool includeQuestions = false,
         bool includeTags = false, bool includeGenres = false)
     {
         var query = _context.Surveys.AsQueryable();
@@ -195,12 +190,7 @@ public class SurveyService : ISurveyService
         {
             query = query.Where(x => x.Content != null && x.Content.Contains(search));
         }
-
-        if (!string.IsNullOrWhiteSpace(tag))
-        {
-            query = query.Where(x => x.Tags != null && x.Tags.Any(y => y.Tag != null && y.Tag.Value == tag));
-        }
-
+        
         return await query.Skip(skip).Take(take).ToListAsync();
     }
 

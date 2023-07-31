@@ -15,8 +15,8 @@ public interface ISurveyService
     Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<Guid> ids,bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
     Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<string> values,bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
     Task<List<Domain.Entities.Survey.Survey>> GetAllAsync();
+    Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
     Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
-    Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, string? tag, bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
     Task AddQuestionAsync(Domain.Entities.Survey.Survey survey,Domain.Entities.Survey.SurveyQuestion question,int order);
     Task AddQuestionsAsync(Domain.Entities.Survey.Survey survey, List<Domain.Entities.Question.Question> questions);
     Task AddTagAsync(Domain.Entities.Survey.Survey survey,Domain.Entities.Survey.SurveyTag tag);
