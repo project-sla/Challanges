@@ -16,25 +16,13 @@ public class GetQuestionTypeHandler : ICommandHandler<GetQuestionTypeCommand,Get
 
     public async Task<GetQuestionTypeResponse> ExecuteAsync(GetQuestionTypeCommand command, CancellationToken ct)
     {
-        Domain.Entities.Question.QuestionType? questionType;
-        if (command.Id is not null)
+        List<Domain.Entities.Question.QuestionType>? questionTypes;
+        if (command.SearchTerm is null)
         {
-            questionType = await _questionTypeService.GetAsync(command.Id.Value);
-            return questionType is null ? new GetQuestionTypeResponse(new Result(false, null, null, 404, "Question type not found")) : new GetQuestionTypeResponse(new Result(true, null, questionType, 200, "Question type retrieved"));
+            questionTypes = await _questionTypeService.GetAllAsync((int)command.PageNumber, (int)command.PageSize);
+            return new GetQuestionTypeResponse(new Result(true,null, questionTypes, 200, "QuestionTypes retrieved successfully."));
         }
-        if (command.SearchTerm is not null)
-        {
-            var questionTypes = await _questionTypeService.GetAllAsync( (int)command.PageNumber, (int)command.PageSize,command.SearchTerm);
-            return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200, "Question types retrieved"));
-        }
-        questionType = await _questionTypeService.GetAsync(command.Id!.Value);
-        if (command.Id is not null || command.SearchTerm is not null)
-            return questionType is null
-                ? new GetQuestionTypeResponse(new Result(false, null, null, 404, "Question type not found"))
-                : new GetQuestionTypeResponse(new Result(true, null, questionType, 200, "Question type retrieved"));
-        {
-            var questionTypes = await _questionTypeService.GetAllAsync( (int)command.PageNumber, (int)command.PageSize);
-            return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200, "Question types retrieved"));
-        }
+        questionTypes = await _questionTypeService.GetAllAsync((int)command.PageNumber, (int)command.PageSize, command.SearchTerm);
+        return new GetQuestionTypeResponse(new Result(true,null, questionTypes, 200, "QuestionTypes retrieved successfully."));
     }
 }
