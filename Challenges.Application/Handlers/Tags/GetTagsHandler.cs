@@ -1,5 +1,6 @@
 ﻿using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.Tags.GetTags;
+using Challenges.Domain.Entities;
 using Challenges.Persistence.Services.Tags;
 using FastEndpoints;
 
@@ -16,20 +17,17 @@ public class GetTagsHandler : ICommandHandler<GetTagsCommand,GetTagsResponse>
 
     public async Task<GetTagsResponse> ExecuteAsync(GetTagsCommand command, CancellationToken ct)
     {
-        if (command.Id.HasValue)
+        Tag? tags;
+        switch (command.Value)
         {
-            var tag = await _tagService.GetAsync(command.Id.Value);
-            return tag is null
-                ? new GetTagsResponse(new Result(false, "Tag not found", null, 404, "Not Found"))
-                : new GetTagsResponse(new Result(true, null, tag, 200, "OK"));
-        }
-        if (command.Value is null)
-            return new GetTagsResponse(new Result(false, "Invalid request", null, 400, "Bad Request"));
-        {
-            var tag = await _tagService.GetAsync(command.Value);
-            return tag is null
-                ? new GetTagsResponse(new Result(false, "Tag not found", null, 404, "Not Found"))
-                : new GetTagsResponse(new Result(true, null, tag, 200, "OK"));
+            case null when command.Id is not null:
+                tags = await _tagService.GetAsync(command.Id.Value);
+                return new GetTagsResponse(new Result(true,null, tags, 200, "Tag retrieved successfully."));
+            case null:
+                return new GetTagsResponse(new Result(false, null, null, 400, "Tag not found."));
+            default:
+                tags = await _tagService.GetAsync(command.Value);
+                return new GetTagsResponse(new Result(true,null, tags, 200, "Tags retrieved successfully."));
         }
     }
 }
