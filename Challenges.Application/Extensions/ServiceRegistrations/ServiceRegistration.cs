@@ -9,5 +9,6 @@ public static class ServiceRegistration
     {
         services.AddScoped<GenreBusinessRules>();
         services.AddScoped<TagBusinessRules>();
+        services.AddScoped<SurveyTypeBusinessRules>();
     }
 }

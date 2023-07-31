@@ -8,7 +8,7 @@ public class CreateSurveyType : Endpoint<CreateSurveyTypeCommand,CreateSurveyTyp
     public override void Configure()
     {
         Post("surveyType/create");
-        Roles("Admin");
+        AllowAnonymous();
         Validator<CreateSurveyTypeValidator>();
     }
 
