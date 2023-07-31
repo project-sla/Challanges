@@ -4,10 +4,8 @@ using FastEndpoints;
 namespace Challenges.Application.Commands.Question.GetQuestions;
 
 public record GetQuestionsCommand(
-            Guid? QuestionId,
-            Guid? CreatedBy,
-            Guid? QuestionTypeId,
-            Guid? SurveyId,
-            int? Page,
-            int? PageSize
-) : ICommand<GetQuestionsResponse>;
+    int? Page,
+    int? PageSize,
+    Guid? SurveyId = null,
+    Guid? CreatedBy = null,
+    Guid? QuestionTypeId = null, Guid? QuestionId = null) : ICommand<GetQuestionsResponse>;

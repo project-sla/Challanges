@@ -3,8 +3,8 @@
 namespace Challenges.Application.Commands.Survey.GetSurvey;
 
 public record GetSurveyCommand(
-        Guid? SurveyId,
-        Guid? UserId,
+        Guid? SurveyId = null,
+        Guid? UserId = null,
         Guid? QuestionId = null,
         Guid? AnswerId = null,
         bool? IncludeQuestions = null,

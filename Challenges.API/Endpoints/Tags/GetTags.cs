@@ -15,7 +15,7 @@ public class GetTags : Endpoint<GetTagsCommand,GetTagsResponse,GetTagsMapper>
 
     public override async Task HandleAsync(GetTagsCommand req, CancellationToken ct)
     {
-        var tag = await new GetTagsCommand(req.Id,req.Value).ExecuteAsync(ct: ct);
+        var tag = await new GetTagsCommand(req.Value, req.Id).ExecuteAsync(ct: ct);
         await SendAsync(GetTagsMapper.ToResponseEntity(tag), cancellation: ct);
     }
 }

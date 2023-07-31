@@ -13,12 +13,8 @@ public class GetQuestionType : Endpoint<GetQuestionTypeCommand,GetQuestionTypeRe
 
     public override async Task HandleAsync(GetQuestionTypeCommand req, CancellationToken ct)
     {
-        var questionType = await new GetQuestionTypeCommand(
-            req.Id,
-            req.SearchTerm,
-            req.PageNumber,
-            req.PageSize
-        ).ExecuteAsync(ct);
+        var questionType = await new GetQuestionTypeCommand(req.PageNumber,
+            req.PageSize, req.SearchTerm, req.Id).ExecuteAsync(ct);
         await SendAsync(questionType, cancellation: ct);
     }
 }

@@ -3,6 +3,5 @@
 namespace Challenges.Application.Commands.Tags.GetTags;
 
 public record GetTagsCommand(
-        Guid? Id,
-        string? Value
-    ) : ICommand<GetTagsResponse>;
+    string? Value = null,
+    Guid? Id = null) : ICommand<GetTagsResponse>;
