@@ -30,20 +30,20 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand,GetSurveyRespon
     public async Task<GetSurveyResponse> ExecuteAsync(GetSurveyCommand command, CancellationToken ct)
     {
         var survey = await _surveyService.GetAsync(command.SurveyId!.Value) ?? await _surveyService.GetAsync(command.UserId!.Value);
-        Debug.WriteLine(survey);
         var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey.SurveyTypeId);
         var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
         
         var questionDtos = new List<QuestionData>();
-        foreach (var question in survey.Questions)
+        foreach (var question in questions)
         {
-            foreach (var qq in question.Question.Answers)
+            var questionDto = new QuestionData(question.Id, question.CreatedBy, new QuestionTypeData(question.QuestionTypeId,question.Content,question.CreatedBy), question.Content, new List<AnswerData>());
+
+            foreach (var qq in question.Answers)
             {
                 var answerDto = new AnswerData(qq.Id, qq.QuestionId, qq.Order, qq.Content, qq.CreatedBy,qq.IsCorrect);
-                var questionDto = new QuestionData(question.Id, question.CreatedBy, new QuestionTypeData(question.Question.QuestionTypeId,question.Question.Content,question.Question.CreatedBy), question.Question.Content, new List<AnswerData>());
                 questionDto.Answers.Add(answerDto);
-                questionDtos.Add(questionDto);
             }
+            questionDtos.Add(questionDto);
         }
         
         var surveyResponse = new SurveyDto(survey.Id, new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos);
