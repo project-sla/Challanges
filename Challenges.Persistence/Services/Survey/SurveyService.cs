@@ -31,6 +31,13 @@ public class SurveyService : ISurveyService
         return survey;
     }
 
+    public async Task<Domain.Entities.Survey.Survey> CreateAsync(Domain.Entities.Survey.Survey survey)
+    {
+        await _context.Surveys.AddAsync(survey);
+        await _context.SaveChangesAsync();
+        return survey;
+    }
+
     public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType, string value, Guid createdBy)
     {
         var survey = new Domain.Entities.Survey.Survey(surveyType, value, createdBy);
@@ -56,86 +63,66 @@ public class SurveyService : ISurveyService
     }
 
 
-    public async Task<Domain.Entities.Survey.Survey?> GetAsync(Guid id, bool includeQuestions = false, bool includeTags = false, bool includeGenres = false)
+    public async Task<Domain.Entities.Survey.Survey?> GetAsync(Guid id)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
-            query = query.Include(x => x.Questions);
-        }
-
-        if (includeTags)
-        {
-            query = query.Include(x => x.Tags);
-        }
-
-        if (includeGenres)
-        {
-            query = query.Include(x => x.Genres);
-        }
+        
+        query = query.Include(x => x.Questions);
+            
+        query = query.Include(x => x.Tags);
+            
+        query = query.Include(x => x.Genres);
 
         return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Domain.Entities.Survey.Survey?> GetAsync(string value, bool includeQuestions = false, bool includeTags = false, bool includeGenres = false)
+    public async Task<List<Domain.Entities.Survey.Survey>?>? GetByUserIdAsync(Guid createdBy)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
-            query = query.Include(x => x.Questions);
-        }
+        
+        query = query.Include(x => x.Questions);
+            
+        query = query.Include(x => x.Tags);
+            
+        query = query.Include(x => x.Genres);
 
-        if (includeTags)
-        {
-            query = query.Include(x => x.Tags);
-        }
-
-        if (includeGenres)
-        {
-            query = query.Include(x => x.Genres);
-        }
-
-        return await query.FirstOrDefaultAsync(x => x.Content == value);
+        return await query.Where(x => x.CreatedBy == createdBy).ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<Guid> ids, bool includeQuestions = false, bool includeTags = false, bool includeGenres = false)
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(string value)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
+        
             query = query.Include(x => x.Questions);
-        }
-
-        if (includeTags)
-        {
+            
             query = query.Include(x => x.Tags);
-        }
-
-        if (includeGenres)
-        {
+            
             query = query.Include(x => x.Genres);
-        }
+
+            return await query.Where(x => x.Content == value).ToListAsync();
+    }
+
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<Guid> ids)
+    {
+        var query = _context.Surveys.AsQueryable();
+        
+        query = query.Include(x => x.Questions);
+            
+        query = query.Include(x => x.Tags);
+            
+        query = query.Include(x => x.Genres);
 
         return await query.Where(x => ids.Contains(x.Id)).ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<string> values, bool includeQuestions = false, bool includeTags = false, bool includeGenres = false)
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<string> values)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
-            query = query.Include(x => x.Questions);
-        }
-
-        if (includeTags)
-        {
-            query = query.Include(x => x.Tags);
-        }
-
-        if (includeGenres)
-        {
-            query = query.Include(x => x.Genres);
-        }
+        query = query.Include(x => x.Questions);
+            
+        query = query.Include(x => x.Tags);
+            
+        query = query.Include(x => x.Genres);
 
         return await query.Where(x => values.Contains(x.Content)).ToListAsync();
     }

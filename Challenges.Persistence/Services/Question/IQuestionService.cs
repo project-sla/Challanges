@@ -7,11 +7,12 @@ public interface IQuestionService
     Task<Domain.Entities.Question.Question?> CreateAsync(Domain.Entities.Question.QuestionType questionType, string value, Guid createdBy);
     Task<Domain.Entities.Question.Question?> CreateAsync(Domain.Entities.Question.QuestionType questionType, string value);
     Task<Domain.Entities.Question.Question?> CreateAsync(string value);
-    Task<Domain.Entities.Question.Question?> GetAsync(Guid id);
+    Task<Challenges.Domain.Entities.Question.Question> CreateAsync(Domain.Entities.Question.Question question);
+    Task<List<Domain.Entities.Question.Question>> GetAsync(Guid id);
     Task<Domain.Entities.Question.Question?> GetAsync(string value);
     Task<List<Domain.Entities.Question.Question>?>? GetQuestionsByQuestionType(Guid qGuid, int skip, int take, string? search);
     Task<List<Domain.Entities.Question.Question>?>? GetQuestionsByQuestionType(Guid qGuid, int skip, int take);
-    Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId, int skip, int take);
+    Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId);
 
     Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId, int skip, int take, string? search);
     Task<List<Domain.Entities.Question.Question>?> GetQuestionsByCreatedByAsync(Guid createdBy);

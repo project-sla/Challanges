@@ -5,5 +5,6 @@ public record AnswerData(
     Guid? QuestionId,
     int Order,
     string? Value,
-    Guid? CreatedBy
+    Guid? CreatedBy,
+    bool? IsCorrect
 );

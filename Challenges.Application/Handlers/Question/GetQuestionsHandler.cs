@@ -19,8 +19,8 @@ public class GetQuestionsHandler : ICommandHandler<GetQuestionsCommand,GetQuesti
     public async Task<GetQuestionsResponse> ExecuteAsync(GetQuestionsCommand command, CancellationToken ct)
     {
         IEnumerable<Domain.Entities.Question.Question?> questions = new List<Domain.Entities.Question.Question?>();
-        if(command.QuestionId is not null) questions.Append(await _questionService.GetAsync(command.QuestionId.Value));
-        if(command.SurveyId is not null) questions = await _questionService.GetQuestionsBySurveyIdAsync(command.SurveyId.Value, (int)command.Page, (int)command.PageSize);
+        if(command.QuestionId is not null) questions = (await _questionService.GetAsync(command.QuestionId.Value));
+        if(command.SurveyId is not null) questions = await _questionService.GetQuestionsBySurveyIdAsync(command.SurveyId.Value);
         if(command.QuestionId is null && command.SurveyId is null) return new GetQuestionsResponse(new Result(false, null, null, 400, "QuestionId or SurveyId must be provided"));
         if (command.CreatedBy is not null) questions = await _questionService.GetQuestionsByCreatedByAsync(command.CreatedBy.Value);
         if (command.QuestionTypeId is not null) questions = await _questionService.GetQuestionsByQuestionType(command.QuestionTypeId.Value,(int)command.Page,(int)command.PageSize);

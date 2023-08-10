@@ -2,6 +2,8 @@
 
 public interface IQuestionAnswerService
 {
+    Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(Domain.Entities.Question.QuestionAnswer questionAnswer);
+    Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(Domain.Entities.Question.QuestionAnswer questionAnswer, Domain.Entities.Question.Question question);
     Task<Domain.Entities.Question.QuestionAnswer?> UpdateAsync(Domain.Entities.Question.QuestionAnswer? questionAnswer);
     Task<Domain.Entities.Question.QuestionAnswer?> GetAsync(Guid id);
     Task<Domain.Entities.Question.QuestionAnswer?> GetAsync(string value);

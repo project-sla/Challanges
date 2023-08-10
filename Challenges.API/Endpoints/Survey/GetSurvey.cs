@@ -13,8 +13,7 @@ public class GetSurvey : Endpoint<GetSurveyCommand,GetSurveyResponse>
 
     public override async Task HandleAsync(GetSurveyCommand req, CancellationToken ct)
     {
-        var survey = await new GetSurveyCommand(req.SurveyId, req.UserId, req.QuestionId, req.AnswerId,
-                req.IncludeQuestions, req.IncludeTags, req.IncludeGenres, req.Search, req.Page, req.PageSize)
+        var survey = await new GetSurveyCommand(SurveyId: req.SurveyId, UserId: req.UserId)
             .ExecuteAsync(ct: ct);
         await SendAsync(survey, cancellation: ct);
     }

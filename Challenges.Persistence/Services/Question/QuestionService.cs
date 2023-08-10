@@ -57,9 +57,16 @@ public class QuestionService : IQuestionService
         return question;
     }
 
-    public async Task<Domain.Entities.Question.Question?> GetAsync(Guid id)
+    public async Task<Domain.Entities.Question.Question> CreateAsync(Domain.Entities.Question.Question question)
     {
-        return await _context.Questions.FindAsync(id);
+        await _context.Questions.AddAsync(question);
+        await _context.SaveChangesAsync();
+        return question;
+    }
+
+    public async Task<List<Domain.Entities.Question.Question>> GetAsync(Guid id)
+    {
+        return await _context.Questions.Include(e=>e.Answers).Where(e=>e.Id.Equals(id)).ToListAsync();
     }
 
     public async Task<Domain.Entities.Question.Question?> GetAsync(string value)
@@ -77,9 +84,13 @@ public class QuestionService : IQuestionService
         return await _context.Questions.Where(q => q.QuestionType != null && q.QuestionType.Id == qGuid).Skip(skip).Take(take).ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId, int skip, int take)
+    public async Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId)
     {
-        return await _context.Questions.Where(q => q.Questions!.Any(sq => sq.SurveyId == surveyId)).Skip(skip).Take(take).ToListAsync();
+        return await _context.Questions
+            .Include(e=>e.Answers)
+            .Where(q => q.Questions!
+                .Any(sq => sq.SurveyId == surveyId))
+            .ToListAsync();
     }
 
     public async Task<List<Domain.Entities.Question.Question>?> GetQuestionsBySurveyIdAsync(Guid surveyId, int skip, int take, string? search)
