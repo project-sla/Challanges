@@ -29,25 +29,41 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand,GetSurveyRespon
 
     public async Task<GetSurveyResponse> ExecuteAsync(GetSurveyCommand command, CancellationToken ct)
     {
-        var survey = await _surveyService.GetAsync(command.SurveyId!.Value) ?? await _surveyService.GetAsync(command.UserId!.Value);
-        var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey.SurveyTypeId);
-        var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
+        List<Domain.Entities.Survey.Survey>? surveyList = new();
+        if (command.SurveyId is null) surveyList = await _surveyService.GetByUserIdAsync(command.UserId!.Value);
+        if(command.UserId is null) surveyList.Add(await _surveyService.GetAsync(command.SurveyId!.Value));
+        if(surveyList is null) return new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
+        List<SurveyDto> surveyResponse = new();
         
-        var questionDtos = new List<QuestionData>();
-        foreach (var question in questions)
+        foreach (var survey in surveyList)
         {
-            var questionDto = new QuestionData(question.Id, question.CreatedBy, new QuestionTypeData(question.QuestionTypeId,question.Content,question.CreatedBy), question.Content, new List<AnswerData>());
 
-            foreach (var qq in question.Answers)
+
+
+            var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey.SurveyTypeId);
+            var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
+
+            var questionDtos = new List<QuestionData>();
+            foreach (var question in questions)
             {
-                var answerDto = new AnswerData(qq.Id, qq.QuestionId, qq.Order, qq.Content, qq.CreatedBy,qq.IsCorrect);
-                questionDto.Answers.Add(answerDto);
+                var questionDto = new QuestionData(question.Id, question.CreatedBy,
+                    new QuestionTypeData(question.QuestionTypeId, question.Content, question.CreatedBy),
+                    question.Content, new List<AnswerData>());
+
+                foreach (var qq in question.Answers)
+                {
+                    var answerDto = new AnswerData(qq.Id, qq.QuestionId, qq.Order, qq.Content, qq.CreatedBy,
+                        qq.IsCorrect);
+                    questionDto.Answers.Add(answerDto);
+                }
+
+                questionDtos.Add(questionDto);
             }
-            questionDtos.Add(questionDto);
+
+            surveyResponse.Add(new SurveyDto(survey.Id,
+                new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos));
         }
-        
-        var surveyResponse = new SurveyDto(survey.Id, new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos);
-        
-        return survey == null ? new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found")) : new GetSurveyResponse(new Result(true, null, surveyResponse, 200, "Survey found"));
+
+        return surveyList == null ? new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found")) : new GetSurveyResponse(new Result(true, null, surveyResponse, 200, "Survey found"));
     }
 }
