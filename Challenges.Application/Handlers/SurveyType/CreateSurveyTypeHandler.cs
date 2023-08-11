@@ -27,6 +27,6 @@ public class CreateSurveyTypeHandler : ICommandHandler<CreateSurveyTypeCommand,C
         }
         var surveyType = new Domain.Entities.Survey.SurveyType(command.SurveyTypeData.Value, command.SurveyTypeData.CreatedBy);
         await _surveyTypeService.CreateSurveyTypeAsync(surveyType);
-        return new CreateSurveyTypeResponse(new Result(true,"SurveyType created",command.SurveyTypeData.Value,201,"Created"));
+        return new CreateSurveyTypeResponse(new Result(true,"SurveyType created",surveyType,201,"Created"));
     }
 }

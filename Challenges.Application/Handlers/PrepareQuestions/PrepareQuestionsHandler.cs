@@ -18,7 +18,6 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
     private readonly ISurveyTypeService _surveyTypeService;
     private readonly IQuestionService _questionService;
     private readonly IQuestionTypeService _questionTypeService;
-    private readonly IAnswerService _answerService;
     private readonly IQuestionAnswerService  _questionAnswerService;
 
     public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService, IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService, IQuestionAnswerService questionAnswerService)
@@ -27,7 +26,6 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         _surveyTypeService = surveyTypeService;
         _questionService = questionService;
         _questionTypeService = questionTypeService;
-        _answerService = answerService;
         _questionAnswerService = questionAnswerService;
     }
 
@@ -38,26 +36,31 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
                          await _surveyTypeService.GetSurveyTypeAsync("default");
 
         var newSurveyEntity = new Domain.Entities.Survey.Survey(surveyType!,command.Survey.Content,command.Survey.CreatedBy);
+        var surveyResponse = new SurveyResponse(newSurveyEntity.Id,newSurveyEntity.Content,newSurveyEntity.CreatedBy,newSurveyEntity.SurveyTypeId,new List<QuestionResponse>());
         await _surveyService.CreateAsync(newSurveyEntity);
-
+        
         foreach (var question in command.Survey.Questions)
         {
             var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId) ?? 
                                await _questionTypeService.GetAsync("default");
             var newQuestionEntity = new Domain.Entities.Question.Question(question.Content,questionType!,newSurveyEntity.Id);
             await _questionService.CreateAsync(newQuestionEntity);
+            var questionResponse = new QuestionResponse(newQuestionEntity.Id,newQuestionEntity.Content,newQuestionEntity.QuestionTypeId,new List<AnswerResponse>());
             foreach (var answer in question.Answers)
             {
                 var newAnswerEntity = new QuestionAnswer(content:answer.Content,question:newQuestionEntity,order:answer.Order,isCorrect: answer.IsCorrect,createdBy:command.Survey.CreatedBy);
                 await _questionAnswerService.CreateAsync(newAnswerEntity);
+                var answerResponse = new AnswerResponse(newAnswerEntity.Id,newAnswerEntity.Content,newAnswerEntity.Order,newAnswerEntity.IsCorrect);
+                questionResponse.Answers.Add(answerResponse);
             }
+            surveyResponse.Questions.Add(questionResponse);
         }
         return new PrepareQuestionsCommandResponse(new Result(
                 true,
                 null,
-                newSurveyEntity,
+                null,
                 200,
                 "Survey created successfully"
-            ));
+            ),surveyResponse);
     }
 }
