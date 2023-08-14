@@ -1,7 +1,9 @@
 ﻿using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.PrepareQuestions;
 using Challenges.Domain.Entities.Question;
+using Challenges.Domain.Entities.Survey;
 using Challenges.Persistence.Services.Answer;
+using Challenges.Persistence.Services.ChallangeRequest;
 using Challenges.Persistence.Services.Question;
 using Challenges.Persistence.Services.QuestionAnswer;
 using Challenges.Persistence.Services.QuestionType;
@@ -19,14 +21,15 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
     private readonly IQuestionService _questionService;
     private readonly IQuestionTypeService _questionTypeService;
     private readonly IQuestionAnswerService  _questionAnswerService;
-
-    public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService, IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService, IQuestionAnswerService questionAnswerService)
+    private readonly IChallengeRequestService _challengeRequestService;
+    public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService, IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService, IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
     {
         _surveyService = surveyService;
         _surveyTypeService = surveyTypeService;
         _questionService = questionService;
         _questionTypeService = questionTypeService;
         _questionAnswerService = questionAnswerService;
+        _challengeRequestService = challengeRequestService;
     }
 
     public async Task<PrepareQuestionsCommandResponse> ExecuteAsync(PrepareQuestionsCommand command, CancellationToken ct)
@@ -55,6 +58,9 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
             }
             surveyResponse.Questions.Add(questionResponse);
         }
+        var challengeRequest = new ChallengeRequest(newSurveyEntity,command.Survey.CreatedBy,command.Survey.ReceivedBy);
+        challengeRequest.Activate();
+        await _challengeRequestService.CreateAsync(challengeRequest);
         return new PrepareQuestionsCommandResponse(new Result(
                 true,
                 null,

@@ -9,6 +9,7 @@ public record PrepareQuestionsCommand(
 public record SurveyDto(
         string Content,
         Guid CreatedBy,
+        Guid ReceivedBy,
         Guid SurveyTypeId,
         List<QuestionDto> Questions
     );

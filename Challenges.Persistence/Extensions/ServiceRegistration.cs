@@ -1,5 +1,6 @@
 ﻿using Challenges.Persistence.Context;
 using Challenges.Persistence.Services.Answer;
+using Challenges.Persistence.Services.ChallangeRequest;
 using Challenges.Persistence.Services.Genre;
 using Challenges.Persistence.Services.Question;
 using Challenges.Persistence.Services.QuestionAnswer;
@@ -25,6 +26,7 @@ public static class ServiceRegistration
         services.AddScoped<IQuestionTypeService, QuestionTypeService>();
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IAnswerService, AnswerService>();
+        services.AddScoped<IChallengeRequestService, ChallengeRequestService>();
 
         services.AddDbContext<ChallengeDbContext>(
             options => options.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value)

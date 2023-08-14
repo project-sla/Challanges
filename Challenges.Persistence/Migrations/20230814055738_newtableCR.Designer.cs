@@ -3,6 +3,7 @@ using System;
 using Challenges.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Challenges.Persistence.Migrations
 {
     [DbContext(typeof(ChallengeDbContext))]
-    partial class ChallengeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814055738_newtableCR")]
+    partial class newtableCR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,7 +152,7 @@ namespace Challenges.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("CompletedAt")
+                    b.Property<DateTime?>("CompletedOn")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedAt")
@@ -211,7 +214,7 @@ namespace Challenges.Persistence.Migrations
 
                     b.HasIndex("SurveyTypeId");
 
-                    b.ToTable("Surveys", "challenge");
+                    b.ToTable("Survey", "challenge");
                 });
 
             modelBuilder.Entity("Challenges.Domain.Entities.Survey.SurveyGenre", b =>
@@ -244,7 +247,7 @@ namespace Challenges.Persistence.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.ToTable("SurveyGenres", "challenge");
+                    b.ToTable("SurveyGenre", "challenge");
                 });
 
             modelBuilder.Entity("Challenges.Domain.Entities.Survey.SurveyQuestion", b =>
@@ -280,7 +283,7 @@ namespace Challenges.Persistence.Migrations
 
                     b.HasIndex("SurveyId");
 
-                    b.ToTable("SurveyQuestions", "challenge");
+                    b.ToTable("SurveyQuestion", "challenge");
                 });
 
             modelBuilder.Entity("Challenges.Domain.Entities.Survey.SurveyTag", b =>

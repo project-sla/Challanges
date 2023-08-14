@@ -1,5 +1,4 @@
-﻿using Challenges.Application.Commands.Common.Answer;
-using FastEndpoints;
+﻿using FastEndpoints;
 
 namespace Challenges.Application.Commands.AnswerQuestions;
 
@@ -9,6 +8,7 @@ public record AnswerQuestionsCommand(
     
 public record SurveyDto(
         Guid Id,
+        Guid ReceivedBy,
         List<QuestionDto> Questions
     );
 public record QuestionDto(
