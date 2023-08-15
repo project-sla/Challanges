@@ -41,7 +41,7 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         var newSurveyEntity = new Domain.Entities.Survey.Survey(surveyType!,command.Survey.Content,command.Survey.CreatedBy);
         var surveyResponse = new SurveyResponse(newSurveyEntity.Id,newSurveyEntity.Content,newSurveyEntity.CreatedBy,newSurveyEntity.SurveyTypeId,new List<QuestionResponse>());
         await _surveyService.CreateAsync(newSurveyEntity);
-        
+        var questionEntList = new List<Domain.Entities.Question.Question>();
         foreach (var question in command.Survey.Questions)
         {
             var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId) ?? 
@@ -56,8 +56,13 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
                 var answerResponse = new AnswerResponse(newAnswerEntity.Id,newAnswerEntity.Content,newAnswerEntity.Order,newAnswerEntity.IsCorrect);
                 questionResponse.Answers.Add(answerResponse);
             }
+
+            var questionObj = new Domain.Entities.Question.Question(question.Content,questionType,command.Survey.CreatedBy);
+            questionEntList.Add(questionObj);
             surveyResponse.Questions.Add(questionResponse);
         }
+
+        await _surveyService.AddQuestionsAsync(newSurveyEntity,questionEntList);
         var challengeRequest = new ChallengeRequest(newSurveyEntity,command.Survey.CreatedBy,command.Survey.ReceivedBy);
         challengeRequest.Activate();
         await _challengeRequestService.CreateAsync(challengeRequest);
