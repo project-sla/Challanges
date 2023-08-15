@@ -30,16 +30,13 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand,GetSurveyRespon
     public async Task<GetSurveyResponse> ExecuteAsync(GetSurveyCommand command, CancellationToken ct)
     {
         List<Domain.Entities.Survey.Survey>? surveyList = new();
-        if (command.SurveyId is null) surveyList = await _surveyService.GetByUserIdAsync(command.UserId!.Value);
-        if(command.UserId is null) surveyList.Add(await _surveyService.GetAsync(command.SurveyId!.Value));
+        surveyList.Add(await _surveyService.GetAsync(command.SurveyId!.Value));
         if(surveyList is null) return new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
         List<SurveyDto> surveyResponse = new();
         
         foreach (var survey in surveyList)
         {
-
-
-
+            
             var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey.SurveyTypeId);
             var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
 
