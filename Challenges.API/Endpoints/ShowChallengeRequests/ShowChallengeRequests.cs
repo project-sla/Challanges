@@ -13,7 +13,7 @@ public class ShowChallengeRequests : Endpoint<ShowChallengeRequestsCommand,ShowC
 
     public override async Task HandleAsync(ShowChallengeRequestsCommand req, CancellationToken ct)
     {
-        var challengeRequests = await new ShowChallengeRequestsCommand(req.SurveyId,req.ReceivedBy).ExecuteAsync(ct: ct);
+        var challengeRequests = await new ShowChallengeRequestsCommand(req.ReceivedBy).ExecuteAsync(ct: ct);
         await SendAsync(challengeRequests, cancellation: ct);
     }
 }

@@ -27,7 +27,7 @@ public class ChallengeRequestService : IChallengeRequestService
         return challengeRequest;
     }
 
-    public async Task UpdateAsync(List<ChallengeRequest> challengeRequests)
+    public async Task UpdateAsync(IEnumerable<ChallengeRequest> challengeRequests)
     {
         _context.ChallengeRequests.UpdateRange(challengeRequests);
         await _context.SaveChangesAsync();
@@ -37,7 +37,6 @@ public class ChallengeRequestService : IChallengeRequestService
     {
         var challengeR= await _context.ChallengeRequests
             .Where(e=>e.ReceivedBy == receivedBy &&  e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
-            .OrderDescending()
             .ToListAsync();
         return challengeR;
     }

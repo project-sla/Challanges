@@ -6,7 +6,7 @@ public interface IChallengeRequestService
 {
     Task<ChallengeRequest?> CreateAsync(ChallengeRequest challengeRequest);
     Task<ChallengeRequest?> UpdateAsync(ChallengeRequest challengeRequest);
-    Task UpdateAsync(List<ChallengeRequest> challengeRequests);
+    Task UpdateAsync(IEnumerable<ChallengeRequest> challengeRequests);
     Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy);
     Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy, Guid surveyId);
     Task<List<ChallengeRequest>> GetListByReceivedByIdAsync(Guid receivedBy);

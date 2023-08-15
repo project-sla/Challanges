@@ -3,6 +3,6 @@
 namespace Challenges.Application.Commands.ShowChallengeRequests;
 
 public record ShowChallengeRequestsCommand(
-        Guid SurveyId,
+        //Guid SurveyId,
         Guid ReceivedBy
     ) :ICommand<ShowChallengeRequestsResponse>;
