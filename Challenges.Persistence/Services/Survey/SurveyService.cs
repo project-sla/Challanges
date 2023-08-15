@@ -194,14 +194,14 @@ public class SurveyService : ISurveyService
     public async Task AddQuestionsAsync(Domain.Entities.Survey.Survey survey,
         List<Domain.Entities.Question.Question> questions)
     {
-        survey.Questions ??= new HashSet<SurveyQuestion>();
+       var surveyQuestionList = new List<SurveyQuestion>();
         foreach (var question in questions)
         {
             if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id)) continue;
-            var surveyQuestion = new SurveyQuestion(survey, question,0);
-            survey.Questions.Add(surveyQuestion);
-            await _context.SurveyQuestions.AddAsync(surveyQuestion);
+            var surveyQuestion = new SurveyQuestion(survey, question,default);
+            surveyQuestionList.Add(surveyQuestion);
         }
+        await _context.SurveyQuestions.AddRangeAsync(surveyQuestionList);
         await _context.SaveChangesAsync();
     }
 
