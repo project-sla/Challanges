@@ -6,7 +6,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.Survey;
 
-public class AddSurveyTypeToSurveyHandler : ICommandHandler<AddSurveyTypeToSurveyCommand,AddSurveyTypeToSurveyResponse>
+public class AddSurveyTypeToSurveyHandler : ICommandHandler<AddSurveyTypeToSurveyCommand, AddSurveyTypeToSurveyResponse>
 {
     private readonly ISurveyService _surveyService;
     private readonly ISurveyTypeService _surveyTypeService;
@@ -17,7 +17,8 @@ public class AddSurveyTypeToSurveyHandler : ICommandHandler<AddSurveyTypeToSurve
         _surveyTypeService = surveyTypeService;
     }
 
-    public async Task<AddSurveyTypeToSurveyResponse> ExecuteAsync(AddSurveyTypeToSurveyCommand command, CancellationToken ct)
+    public async Task<AddSurveyTypeToSurveyResponse> ExecuteAsync(AddSurveyTypeToSurveyCommand command,
+        CancellationToken ct)
     {
         var survey = await _surveyService.GetAsync(command.SurveyId);
         if (survey == null)

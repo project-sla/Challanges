@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Question.GetQuestions;
 
 public record GetQuestionsResponse(
-        Result Result
+    Result Result
 );

@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.SurveyType;
 
-public class GetSurveyTypeHandler : ICommandHandler<GetSurveyTypeCommand,GetSurveyTypeResponse>
+public class GetSurveyTypeHandler : ICommandHandler<GetSurveyTypeCommand, GetSurveyTypeResponse>
 {
     private readonly ISurveyTypeService _surveyTypeService;
 
@@ -19,7 +19,10 @@ public class GetSurveyTypeHandler : ICommandHandler<GetSurveyTypeCommand,GetSurv
         if (command.Id is not null)
         {
             var surveyType = await _surveyTypeService.GetSurveyTypeAsync(command.Id.Value);
-            return surveyType is null ? new GetSurveyTypeResponse(new Result( false,"SurveyType not found",null,404,"SurveyType not found")) : new GetSurveyTypeResponse(new Result(true,"SurveyType found",surveyType,200,"SurveyType found"));
+            return surveyType is null
+                ? new GetSurveyTypeResponse(
+                    new Result(false, "SurveyType not found", null, 404, "SurveyType not found"))
+                : new GetSurveyTypeResponse(new Result(true, "SurveyType found", surveyType, 200, "SurveyType found"));
         }
 
         if (command.Value is null)
@@ -27,8 +30,10 @@ public class GetSurveyTypeHandler : ICommandHandler<GetSurveyTypeCommand,GetSurv
                 "Id or Value must be provided"));
         {
             var surveyType = await _surveyTypeService.GetSurveyTypeAsync(command.Value);
-            return surveyType is null ? new GetSurveyTypeResponse(new Result( false,"SurveyType not found",null,404,"SurveyType not found")) : new GetSurveyTypeResponse(new Result(true,"SurveyType found",surveyType,200,"SurveyType found"));
+            return surveyType is null
+                ? new GetSurveyTypeResponse(
+                    new Result(false, "SurveyType not found", null, 404, "SurveyType not found"))
+                : new GetSurveyTypeResponse(new Result(true, "SurveyType found", surveyType, 200, "SurveyType found"));
         }
-
     }
 }

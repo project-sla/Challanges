@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.SurveyType;
 
-public class GetAllSurveyType : Endpoint<GetAllSurveyTypeCommand,GetAllSurveyTypeResponse,GetAllSurveyTypeMapper>
+public class GetAllSurveyType : Endpoint<GetAllSurveyTypeCommand, GetAllSurveyTypeResponse, GetAllSurveyTypeMapper>
 {
     public override void Configure()
     {

@@ -6,4 +6,4 @@ namespace Challenges.Application.Commands.Survey.AddQuestionsToSurvey;
 public record AddQuestionsToSurveyCommand(
     Guid? SurveyId,
     List<QuestionData>? Questions
-    ) : ICommand<AddQuestionsToSurveyResponse>;
+) : ICommand<AddQuestionsToSurveyResponse>;

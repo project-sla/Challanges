@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.QuestionType;
 
-public class GetQuestionTypeHandler : ICommandHandler<GetQuestionTypeCommand,GetQuestionTypeResponse>
+public class GetQuestionTypeHandler : ICommandHandler<GetQuestionTypeCommand, GetQuestionTypeResponse>
 {
     private readonly IQuestionTypeService _questionTypeService;
 
@@ -20,9 +20,13 @@ public class GetQuestionTypeHandler : ICommandHandler<GetQuestionTypeCommand,Get
         if (command.SearchTerm is null)
         {
             questionTypes = await _questionTypeService.GetAllAsync((int)command.PageNumber, (int)command.PageSize);
-            return new GetQuestionTypeResponse(new Result(true,null, questionTypes, 200, "QuestionTypes retrieved successfully."));
+            return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200,
+                "QuestionTypes retrieved successfully."));
         }
-        questionTypes = await _questionTypeService.GetAllAsync((int)command.PageNumber, (int)command.PageSize, command.SearchTerm);
-        return new GetQuestionTypeResponse(new Result(true,null, questionTypes, 200, "QuestionTypes retrieved successfully."));
+
+        questionTypes =
+            await _questionTypeService.GetAllAsync((int)command.PageNumber, (int)command.PageSize, command.SearchTerm);
+        return new GetQuestionTypeResponse(new Result(true, null, questionTypes, 200,
+            "QuestionTypes retrieved successfully."));
     }
 }

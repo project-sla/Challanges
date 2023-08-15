@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.SurveyType;
 
-public class CreateSurveyType : Endpoint<CreateSurveyTypeCommand,CreateSurveyTypeResponse>
+public class CreateSurveyType : Endpoint<CreateSurveyTypeCommand, CreateSurveyTypeResponse>
 {
     public override void Configure()
     {

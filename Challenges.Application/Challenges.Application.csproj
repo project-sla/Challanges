@@ -8,14 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FastEndpoints" Version="5.14.0" />
-      <PackageReference Include="FastEndpoints.Security" Version="5.14.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+        <PackageReference Include="FastEndpoints" Version="5.14.0"/>
+        <PackageReference Include="FastEndpoints.Security" Version="5.14.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Challenges.Domain\Challenges.Domain.csproj" />
-      <ProjectReference Include="..\Challenges.Persistence\Challenges.Persistence.csproj" />
+        <ProjectReference Include="..\Challenges.Domain\Challenges.Domain.csproj"/>
+        <ProjectReference Include="..\Challenges.Persistence\Challenges.Persistence.csproj"/>
     </ItemGroup>
 
 </Project>

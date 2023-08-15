@@ -4,4 +4,4 @@ namespace Challenges.Application.Commands.Question.CreateQuestions;
 
 public record CreateQuestionsResponse(
     Result Result
-    );
+);

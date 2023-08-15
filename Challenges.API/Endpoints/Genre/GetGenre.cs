@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Genre;
 
-public class GetGenre : Endpoint<GetGenreCommand,GetGenreResponse,GetGenreMapper>
+public class GetGenre : Endpoint<GetGenreCommand, GetGenreResponse, GetGenreMapper>
 {
     public override void Configure()
     {
@@ -15,7 +15,7 @@ public class GetGenre : Endpoint<GetGenreCommand,GetGenreResponse,GetGenreMapper
 
     public override async Task HandleAsync(GetGenreCommand req, CancellationToken ct)
     {
-        var genre = await new GetGenreCommand(req.Id).ExecuteAsync(ct: ct);
+        var genre = await new GetGenreCommand(req.Id).ExecuteAsync(ct);
         await SendAsync(GetGenreMapper.ToResponseEntity(genre), cancellation: ct);
     }
 }

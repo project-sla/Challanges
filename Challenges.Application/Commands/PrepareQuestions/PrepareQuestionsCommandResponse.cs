@@ -3,9 +3,9 @@
 namespace Challenges.Application.Commands.PrepareQuestions;
 
 public record PrepareQuestionsCommandResponse(
-        Result Result,
-        SurveyResponse Survey
-    );
+    Result Result,
+    SurveyResponse Survey
+);
 
 public record SurveyResponse(
     Guid Id,

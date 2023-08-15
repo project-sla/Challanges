@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Genre.GetGenre;
 
 public record GetGenreResponse(
-        Result Result
-    );
+    Result Result
+);

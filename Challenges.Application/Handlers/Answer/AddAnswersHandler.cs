@@ -7,10 +7,11 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.Answer;
 
-public class AddAnswersHandler : ICommandHandler<AddAnswersCommand,AddAnswerResponse>
+public class AddAnswersHandler : ICommandHandler<AddAnswersCommand, AddAnswerResponse>
 {
     private readonly IAnswerService _answerService;
     private readonly IQuestionService _questionService;
+
     public AddAnswersHandler(IAnswerService answerService, IQuestionService questionService)
     {
         _answerService = answerService;
@@ -25,13 +26,12 @@ public class AddAnswersHandler : ICommandHandler<AddAnswersCommand,AddAnswerResp
             if (answer.QuestionId == null) continue;
             var question = await _questionService.GetAsync(answer.QuestionId.Value);
             if (question is null)
-            {
                 return new AddAnswerResponse(new Result(false, null, null, 400, "Question not found"));
-            }
             if (answer.Value is null) continue;
             //if (answer.CreatedBy is not null)
-         // TODO:Fix this       questionAnswerList.Add(new QuestionAnswer(question, answer.Value, answer.Order, answer.IsCorrect, answer.CreatedBy.Value));
+            // TODO:Fix this       questionAnswerList.Add(new QuestionAnswer(question, answer.Value, answer.Order, answer.IsCorrect, answer.CreatedBy.Value));
         }
+
         await _answerService.AddAnswers(questionAnswerList);
         return new AddAnswerResponse(new Result(true, null, null, 200, "Answers added"));
     }

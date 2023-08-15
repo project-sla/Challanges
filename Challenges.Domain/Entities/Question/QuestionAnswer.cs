@@ -8,7 +8,7 @@ public class QuestionAnswer : Base
     {
     }
 
-    public QuestionAnswer(Base question, string content, int order,bool isCorrect, Guid createdBy)
+    public QuestionAnswer(Base question, string content, int order, bool isCorrect, Guid createdBy)
     {
         QuestionId = question.Id;
         CreatedBy = createdBy;

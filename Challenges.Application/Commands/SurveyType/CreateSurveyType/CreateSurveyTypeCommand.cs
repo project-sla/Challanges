@@ -5,4 +5,4 @@ namespace Challenges.Application.Commands.SurveyType.CreateSurveyType;
 
 public record CreateSurveyTypeCommand(
     SurveyTypeData SurveyTypeData
-    ) : ICommand<CreateSurveyTypeResponse>;
+) : ICommand<CreateSurveyTypeResponse>;

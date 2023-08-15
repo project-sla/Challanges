@@ -9,7 +9,7 @@ public class Genre : Base
     {
     }
 
-    public Genre(string value, Guid createdBy) 
+    public Genre(string value, Guid createdBy)
     {
         Value = value;
         CreatedBy = createdBy;

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Challenges.Application.Commands.Common;
+﻿using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.PrepareQuestions;
 using Challenges.Domain.Entities.Question;
 using Challenges.Domain.Entities.Survey;
@@ -16,14 +15,17 @@ namespace Challenges.Application.Handlers.PrepareQuestions;
 
 public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, PrepareQuestionsCommandResponse>
 {
-    
-    private readonly ISurveyService _surveyService;
-    private readonly ISurveyTypeService _surveyTypeService;
+    private readonly IChallengeRequestService _challengeRequestService;
+    private readonly IQuestionAnswerService _questionAnswerService;
     private readonly IQuestionService _questionService;
     private readonly IQuestionTypeService _questionTypeService;
-    private readonly IQuestionAnswerService  _questionAnswerService;
-    private readonly IChallengeRequestService _challengeRequestService;
-    public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService, IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService, IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
+
+    private readonly ISurveyService _surveyService;
+    private readonly ISurveyTypeService _surveyTypeService;
+
+    public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService,
+        IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService,
+        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
     {
         _surveyService = surveyService;
         _surveyTypeService = surveyTypeService;
@@ -33,47 +35,53 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         _challengeRequestService = challengeRequestService;
     }
 
-    public async Task<PrepareQuestionsCommandResponse> ExecuteAsync(PrepareQuestionsCommand command, CancellationToken ct)
+    public async Task<PrepareQuestionsCommandResponse> ExecuteAsync(PrepareQuestionsCommand command,
+        CancellationToken ct)
     {
-        
-        var surveyType = await _surveyTypeService.GetSurveyTypeAsync(command.Survey.SurveyTypeId) ?? 
+        var surveyType = await _surveyTypeService.GetSurveyTypeAsync(command.Survey.SurveyTypeId) ??
                          await _surveyTypeService.GetSurveyTypeAsync("default");
 
-        var newSurveyEntity = new Domain.Entities.Survey.Survey(surveyType!,command.Survey.Content,command.Survey.CreatedBy);
-        var surveyResponse = new SurveyResponse(newSurveyEntity.Id,newSurveyEntity.Content,newSurveyEntity.CreatedBy,newSurveyEntity.SurveyTypeId,new List<QuestionResponse>());
+        var newSurveyEntity =
+            new Domain.Entities.Survey.Survey(surveyType!, command.Survey.Content, command.Survey.CreatedBy);
+        var surveyResponse = new SurveyResponse(newSurveyEntity.Id, newSurveyEntity.Content, newSurveyEntity.CreatedBy,
+            newSurveyEntity.SurveyTypeId, new List<QuestionResponse>());
         await _surveyService.CreateAsync(newSurveyEntity);
         var questionEntList = new List<Domain.Entities.Question.Question>();
         foreach (var question in command.Survey.Questions)
         {
-            var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId) ?? 
+            var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId) ??
                                await _questionTypeService.GetAsync("default");
-            var newQuestionEntity = new Domain.Entities.Question.Question(question.Content,questionType!,newSurveyEntity.Id);
+            var newQuestionEntity =
+                new Domain.Entities.Question.Question(question.Content, questionType!, newSurveyEntity.Id);
             await _questionService.CreateAsync(newQuestionEntity);
-            var questionResponse = new QuestionResponse(newQuestionEntity.Id,newQuestionEntity.Content,newQuestionEntity.QuestionTypeId,new List<AnswerResponse>());
-            foreach (var answer in question.Answers)
+            var questionResponse = new QuestionResponse(newQuestionEntity.Id, newQuestionEntity.Content,
+                newQuestionEntity.QuestionTypeId, new List<AnswerResponse>());
+            foreach (var newAnswerEntity in question.Answers.Select(answer =>
+                         new QuestionAnswer(content: answer.Content, question: newQuestionEntity, order: answer.Order,
+                             isCorrect: answer.IsCorrect, createdBy: command.Survey.CreatedBy)))
             {
-                var newAnswerEntity = new QuestionAnswer(content:answer.Content,question:newQuestionEntity,order:answer.Order,isCorrect: answer.IsCorrect,createdBy:command.Survey.CreatedBy);
                 await _questionAnswerService.CreateAsync(newAnswerEntity);
-                var answerResponse = new AnswerResponse(newAnswerEntity.Id,newAnswerEntity.Content,newAnswerEntity.Order,newAnswerEntity.IsCorrect);
+                var answerResponse = new AnswerResponse(newAnswerEntity.Id, newAnswerEntity.Content,
+                    newAnswerEntity.Order, newAnswerEntity.IsCorrect);
                 questionResponse.Answers.Add(answerResponse);
             }
+
             questionEntList.Add(newQuestionEntity);
             surveyResponse.Questions.Add(questionResponse);
         }
 
-        await _surveyService.AddQuestionsAsync(newSurveyEntity,questionEntList);
-        var challengeRequest = new ChallengeRequest(newSurveyEntity,newSurveyEntity.CreatedBy,command.Survey.ReceivedBy);
+        await _surveyService.AddQuestionsAsync(newSurveyEntity, questionEntList);
+        var challengeRequest =
+            new ChallengeRequest(newSurveyEntity, newSurveyEntity.CreatedBy, command.Survey.ReceivedBy);
         challengeRequest.Activate();
-        Debug.WriteLine(newSurveyEntity);
-        Debug.WriteLine(challengeRequest);
-        
+
         await _challengeRequestService.CreateAsync(challengeRequest);
         return new PrepareQuestionsCommandResponse(new Result(
-                true,
-                null,
-                null,
-                200,
-                "Survey created successfully"
-            ),surveyResponse);
+            true,
+            null,
+            null,
+            200,
+            "Survey created successfully"
+        ), surveyResponse);
     }
 }

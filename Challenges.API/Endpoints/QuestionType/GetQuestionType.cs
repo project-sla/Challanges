@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.QuestionType;
 
-public class GetQuestionType : Endpoint<GetQuestionTypeCommand,GetQuestionTypeResponse>
+public class GetQuestionType : Endpoint<GetQuestionTypeCommand, GetQuestionTypeResponse>
 {
     public override void Configure()
     {

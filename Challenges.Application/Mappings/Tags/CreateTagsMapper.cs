@@ -1,5 +1,4 @@
 ﻿using Challenges.Application.Commands.Tags.CreateTags;
-using Challenges.Domain.Entities;
 using FastEndpoints;
 
 namespace Challenges.Application.Mappings.Tags;

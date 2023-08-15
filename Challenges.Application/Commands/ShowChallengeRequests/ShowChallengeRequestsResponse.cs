@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.ShowChallengeRequests;
 
 public record ShowChallengeRequestsResponse(
-        Result Result
-    );
+    Result Result
+);

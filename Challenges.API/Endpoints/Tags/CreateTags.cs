@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Tags;
 
-public class CreateTags : Endpoint<CreateTagsCommand,CreateTagsResponse,CreateTagsMapper>
+public class CreateTags : Endpoint<CreateTagsCommand, CreateTagsResponse, CreateTagsMapper>
 {
     public override void Configure()
     {

@@ -7,6 +7,7 @@ namespace Challenges.Persistence.Services.Tags;
 public class TagService : ITagService
 {
     private readonly ChallengeDbContext _context;
+
     public TagService(ChallengeDbContext context)
     {
         _context = context;
@@ -53,6 +54,7 @@ public class TagService : ITagService
             var tag = await CreateAsync(value!);
             tags.Add(tag);
         }
+
         return tags;
     }
 
@@ -68,6 +70,7 @@ public class TagService : ITagService
 
     public async Task<List<Tag>> GetAllAsync(int skip, int take, string? search)
     {
-        return await _context.Tags.Where(x => search != null && x.Value!.Contains(search)).Skip(skip).Take(take).ToListAsync();
+        return await _context.Tags.Where(x => search != null && x.Value!.Contains(search)).Skip(skip).Take(take)
+            .ToListAsync();
     }
 }

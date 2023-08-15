@@ -22,7 +22,8 @@ public class SurveyService : ISurveyService
         return survey;
     }
 
-    public async Task<Domain.Entities.Survey.Survey?> UpdateAsync(Domain.Entities.Survey.Survey? survey, Domain.Entities.Survey.SurveyType surveyType)
+    public async Task<Domain.Entities.Survey.Survey?> UpdateAsync(Domain.Entities.Survey.Survey? survey,
+        Domain.Entities.Survey.SurveyType surveyType)
     {
         if (survey == null) return null;
         survey.SurveyType = surveyType;
@@ -38,7 +39,8 @@ public class SurveyService : ISurveyService
         return survey;
     }
 
-    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType, string value, Guid createdBy)
+    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType,
+        string value, Guid createdBy)
     {
         var survey = new Domain.Entities.Survey.Survey(surveyType, value, createdBy);
         await _context.Surveys.AddAsync(survey);
@@ -46,7 +48,8 @@ public class SurveyService : ISurveyService
         return survey;
     }
 
-    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType, string value)
+    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType,
+        string value)
     {
         var survey = new Domain.Entities.Survey.Survey(surveyType, value, Guid.Empty);
         await _context.Surveys.AddAsync(survey);
@@ -56,7 +59,8 @@ public class SurveyService : ISurveyService
 
     public async Task<Domain.Entities.Survey.Survey?> CreateAsync(string value)
     {
-        var survey = new Domain.Entities.Survey.Survey(new Domain.Entities.Survey.SurveyType("default",Guid.Empty), value, Guid.Empty);
+        var survey = new Domain.Entities.Survey.Survey(new Domain.Entities.Survey.SurveyType("default", Guid.Empty),
+            value, Guid.Empty);
         await _context.Surveys.AddAsync(survey);
         await _context.SaveChangesAsync();
         return survey;
@@ -66,11 +70,11 @@ public class SurveyService : ISurveyService
     public async Task<Domain.Entities.Survey.Survey?> GetAsync(Guid id)
     {
         var query = _context.Surveys.AsQueryable();
-        
+
         query = query.Include(x => x.Questions);
-            
+
         query = query.Include(x => x.Tags);
-            
+
         query = query.Include(x => x.Genres);
 
         return await query.FirstOrDefaultAsync(x => x.Id == id);
@@ -79,11 +83,11 @@ public class SurveyService : ISurveyService
     public async Task<List<Domain.Entities.Survey.Survey>?>? GetByUserIdAsync(Guid createdBy)
     {
         var query = _context.Surveys.AsQueryable();
-        
+
         query = query.Include(x => x.Questions);
-            
+
         query = query.Include(x => x.Tags);
-            
+
         query = query.Include(x => x.Genres);
 
         return await query.Where(x => x.CreatedBy == createdBy).ToListAsync();
@@ -92,24 +96,24 @@ public class SurveyService : ISurveyService
     public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(string value)
     {
         var query = _context.Surveys.AsQueryable();
-        
-            query = query.Include(x => x.Questions);
-            
-            query = query.Include(x => x.Tags);
-            
-            query = query.Include(x => x.Genres);
 
-            return await query.Where(x => x.Content == value).ToListAsync();
+        query = query.Include(x => x.Questions);
+
+        query = query.Include(x => x.Tags);
+
+        query = query.Include(x => x.Genres);
+
+        return await query.Where(x => x.Content == value).ToListAsync();
     }
 
     public async Task<List<Domain.Entities.Survey.Survey>> GetAsync(IEnumerable<Guid> ids)
     {
         var query = _context.Surveys.AsQueryable();
-        
+
         query = query.Include(x => x.Questions);
-            
+
         query = query.Include(x => x.Tags);
-            
+
         query = query.Include(x => x.Genres);
 
         return await query.Where(x => ids.Contains(x.Id)).ToListAsync();
@@ -119,9 +123,9 @@ public class SurveyService : ISurveyService
     {
         var query = _context.Surveys.AsQueryable();
         query = query.Include(x => x.Questions);
-            
+
         query = query.Include(x => x.Tags);
-            
+
         query = query.Include(x => x.Genres);
 
         return await query.Where(x => values.Contains(x.Content)).ToListAsync();
@@ -132,52 +136,34 @@ public class SurveyService : ISurveyService
         return await _context.Surveys.ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take,bool includeQuestions = false, bool includeTags = false,
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take,
+        bool includeQuestions = false, bool includeTags = false,
         bool includeGenres = false)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
-            query = query.Include(x => x.Questions);
-        }
+        if (includeQuestions) query = query.Include(x => x.Questions);
 
-        if (includeTags)
-        {
-            query = query.Include(x => x.Tags);
-        }
+        if (includeTags) query = query.Include(x => x.Tags);
 
-        if (includeGenres)
-        {
-            query = query.Include(x => x.Genres);
-        }
+        if (includeGenres) query = query.Include(x => x.Genres);
 
         return await query.Skip(skip).Take(take).ToListAsync();
     }
 
-    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, bool includeQuestions = false,
+    public async Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search,
+        bool includeQuestions = false,
         bool includeTags = false, bool includeGenres = false)
     {
         var query = _context.Surveys.AsQueryable();
-        if (includeQuestions)
-        {
-            query = query.Include(x => x.Questions);
-        }
+        if (includeQuestions) query = query.Include(x => x.Questions);
 
-        if (includeTags)
-        {
-            query = query.Include(x => x.Tags);
-        }
+        if (includeTags) query = query.Include(x => x.Tags);
 
-        if (includeGenres)
-        {
-            query = query.Include(x => x.Genres);
-        }
+        if (includeGenres) query = query.Include(x => x.Genres);
 
         if (!string.IsNullOrWhiteSpace(search))
-        {
             query = query.Where(x => x.Content != null && x.Content.Contains(search));
-        }
-        
+
         return await query.Skip(skip).Take(take).ToListAsync();
     }
 
@@ -185,9 +171,10 @@ public class SurveyService : ISurveyService
     public async Task AddQuestionAsync(Domain.Entities.Survey.Survey survey, Domain.Entities.Question.Question question,
         int order)
     {
-        if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id)) return;
+        if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id))
+            return;
         survey.Questions ??= new HashSet<SurveyQuestion>();
-        var surveyQuestion = new SurveyQuestion(survey, question,order);
+        var surveyQuestion = new SurveyQuestion(survey, question, order);
         await _context.SurveyQuestions.AddAsync(surveyQuestion);
         await _context.SaveChangesAsync();
     }
@@ -195,13 +182,15 @@ public class SurveyService : ISurveyService
     public async Task AddQuestionsAsync(Domain.Entities.Survey.Survey survey,
         List<Domain.Entities.Question.Question> questions)
     {
-       var surveyQuestionList = new List<SurveyQuestion>();
+        var surveyQuestionList = new List<SurveyQuestion>();
         foreach (var question in questions)
         {
-            if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id)) continue;
-            var surveyQuestion = new SurveyQuestion(survey, question,default);
+            if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id))
+                continue;
+            var surveyQuestion = new SurveyQuestion(survey, question, default);
             surveyQuestionList.Add(surveyQuestion);
         }
+
         await _context.SurveyQuestions.AddRangeAsync(surveyQuestionList);
         await _context.SaveChangesAsync();
     }
@@ -226,6 +215,7 @@ public class SurveyService : ISurveyService
             survey.Tags.Add(surveyTag);
             await _context.SurveyTags.AddAsync(surveyTag);
         }
+
         await _context.SaveChangesAsync();
     }
 
@@ -247,23 +237,27 @@ public class SurveyService : ISurveyService
             survey.Genres?.Add(surveyGenre);
             await _context.SurveyGenres.AddAsync(surveyGenre);
         }
+
         await _context.SaveChangesAsync();
     }
 
-    public async Task AddSurveyTypeAsync(Domain.Entities.Survey.Survey survey, Domain.Entities.Survey.SurveyType surveyType)
+    public async Task AddSurveyTypeAsync(Domain.Entities.Survey.Survey survey,
+        Domain.Entities.Survey.SurveyType surveyType)
     {
         if (await _context.Surveys.AnyAsync(x => x.Id == survey.Id && x.SurveyType == surveyType)) return;
         survey.SurveyType = surveyType;
         await _context.SaveChangesAsync();
     }
 
-    public async Task AddSurveyTypesAsync(Domain.Entities.Survey.Survey survey, IEnumerable<Domain.Entities.Survey.SurveyType> surveyTypes)
+    public async Task AddSurveyTypesAsync(Domain.Entities.Survey.Survey survey,
+        IEnumerable<Domain.Entities.Survey.SurveyType> surveyTypes)
     {
         foreach (var surveyType in surveyTypes)
         {
             if (await _context.Surveys.AnyAsync(x => x.Id == survey.Id && x.SurveyType == surveyType)) continue;
             survey.SurveyType = surveyType;
         }
+
         await _context.SaveChangesAsync();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Challenges.Application.Commands.Answer.GetAnswers;
-using FastEndpoints;
+﻿using FastEndpoints;
 
 namespace Challenges.Application.Commands.Question.GetQuestions;
 

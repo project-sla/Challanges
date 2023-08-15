@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.AnswerQuestions;
 
-public class AnswerQuestions : Endpoint<AnswerQuestionsCommand,AnswerQuestionsResponse>
+public class AnswerQuestions : Endpoint<AnswerQuestionsCommand, AnswerQuestionsResponse>
 {
     public override void Configure()
     {

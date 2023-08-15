@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Survey.AddGenresToSurvey;
 
 public record AddGenresToSurveyResponse(
-        Result Result
-    );
+    Result Result
+);

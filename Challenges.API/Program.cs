@@ -7,7 +7,6 @@ using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 // Fetch RSA keys
@@ -18,7 +17,7 @@ services.AddPersistenceServices(builder.Configuration);
 services.AddDbContext<ChallengeDbContext>();
 services.AddApplicationServices();
 services.AddFastEndpoints();
-builder.Services.AddJWTBearerAuth( privateKey ?? throw new InvalidOperationException());
+builder.Services.AddJWTBearerAuth(privateKey ?? throw new InvalidOperationException());
 services.SwaggerDocument(o =>
 {
     o.DocumentSettings = s =>

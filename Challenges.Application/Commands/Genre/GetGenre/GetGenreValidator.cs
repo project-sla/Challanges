@@ -7,6 +7,6 @@ public class GetGenreValidator : Validator<GetGenreCommand>
 {
     public GetGenreValidator()
     {
-        RuleFor(e=>e.Id).NotEmpty().NotNull().WithMessage("Id is required");
+        RuleFor(e => e.Id).NotEmpty().NotNull().WithMessage("Id is required");
     }
 }

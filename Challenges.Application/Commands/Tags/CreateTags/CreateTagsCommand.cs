@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Tags.CreateTags;
 
 public record CreateTagsCommand(
-        string Value
-    ) : ICommand<CreateTagsResponse>;
+    string Value
+) : ICommand<CreateTagsResponse>;

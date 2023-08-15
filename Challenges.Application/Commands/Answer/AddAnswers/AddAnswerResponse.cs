@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Answer.AddAnswers;
 
 public record AddAnswerResponse(
-        Result Result
-    );
+    Result Result
+);

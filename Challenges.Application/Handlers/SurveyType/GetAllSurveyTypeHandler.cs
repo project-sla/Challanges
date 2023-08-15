@@ -5,7 +5,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.SurveyType;
 
-public class GetAllSurveyTypeHandler : ICommandHandler<GetAllSurveyTypeCommand,GetAllSurveyTypeResponse>
+public class GetAllSurveyTypeHandler : ICommandHandler<GetAllSurveyTypeCommand, GetAllSurveyTypeResponse>
 {
     private readonly ISurveyTypeService _surveyTypeService;
 
@@ -16,7 +16,7 @@ public class GetAllSurveyTypeHandler : ICommandHandler<GetAllSurveyTypeCommand,G
 
     public async Task<GetAllSurveyTypeResponse> ExecuteAsync(GetAllSurveyTypeCommand command, CancellationToken ct)
     {
-        var surveyTypes = await _surveyTypeService.GetAllSurveyTypesAsync(page:command.PageNumber, pageSize:command.PageSize);
-        return new GetAllSurveyTypeResponse(new Result(true,"SurveyType found",surveyTypes,200,"SurveyType found"));
+        var surveyTypes = await _surveyTypeService.GetAllSurveyTypesAsync(command.PageNumber, command.PageSize);
+        return new GetAllSurveyTypeResponse(new Result(true, "SurveyType found", surveyTypes, 200, "SurveyType found"));
     }
 }

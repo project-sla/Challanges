@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Genre.CreateGenre;
 
 public record CreateGenreResponse(
-        Result? Result
-    );
+    Result? Result
+);

@@ -8,7 +8,7 @@ public class SurveyType : Base
     {
     }
 
-    public SurveyType(string value,Guid createdBy)
+    public SurveyType(string value, Guid createdBy)
     {
         CreatedBy = createdBy;
         Value = value;

@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.SurveyType.GetAllSurveyType;
 
 public record GetAllSurveyTypeResponse(
-        Result Result
-    );
+    Result Result
+);

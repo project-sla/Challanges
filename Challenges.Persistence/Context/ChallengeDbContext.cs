@@ -11,7 +11,7 @@ public class ChallengeDbContext : DbContext
         : base(options)
     {
     }
-    
+
     public DbSet<Survey> Surveys { get; set; }
     public DbSet<SurveyGenre> SurveyGenres { get; set; }
     public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
@@ -23,6 +23,7 @@ public class ChallengeDbContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<ChallengeRequest> ChallengeRequests { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ChallengeDbContext).Assembly);

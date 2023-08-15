@@ -4,7 +4,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Tags;
 
-public class GetTags : Endpoint<GetTagsCommand,GetTagsResponse,GetTagsMapper>
+public class GetTags : Endpoint<GetTagsCommand, GetTagsResponse, GetTagsMapper>
 {
     public override void Configure()
     {
@@ -15,7 +15,7 @@ public class GetTags : Endpoint<GetTagsCommand,GetTagsResponse,GetTagsMapper>
 
     public override async Task HandleAsync(GetTagsCommand req, CancellationToken ct)
     {
-        var tag = await new GetTagsCommand(req.Value, req.Id).ExecuteAsync(ct: ct);
+        var tag = await new GetTagsCommand(req.Value, req.Id).ExecuteAsync(ct);
         await SendAsync(GetTagsMapper.ToResponseEntity(tag), cancellation: ct);
     }
 }

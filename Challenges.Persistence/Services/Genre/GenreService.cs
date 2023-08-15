@@ -7,6 +7,7 @@ namespace Challenges.Persistence.Services.Genre;
 public class GenreService : IGenreService
 {
     private readonly ChallengeDbContext _context;
+
     public GenreService(ChallengeDbContext context)
     {
         _context = context;
@@ -32,17 +33,17 @@ public class GenreService : IGenreService
 
     public async Task<Domain.Entities.Genre?> GetAsync(Guid id)
     {
-        return await _context.Genres.Where(e=>e.Id == id).FirstOrDefaultAsync();
+        return await _context.Genres.Where(e => e.Id == id).FirstOrDefaultAsync();
     }
 
     public async Task<Domain.Entities.Genre?> GetAsync(string value)
     {
-        return await _context.Genres.Where(e=>e.Value == value).FirstOrDefaultAsync();
+        return await _context.Genres.Where(e => e.Value == value).FirstOrDefaultAsync();
     }
 
     public async Task<IEnumerable<Domain.Entities.Genre>> GetAsync(IEnumerable<Guid> ids)
     {
-        return await _context.Genres.Where(e=>ids.Contains(e.Id)).ToListAsync();
+        return await _context.Genres.Where(e => ids.Contains(e.Id)).ToListAsync();
     }
 
     public async Task<IEnumerable<Domain.Entities.Genre>> GetAllAsync()
@@ -52,7 +53,8 @@ public class GenreService : IGenreService
 
     public async Task<IEnumerable<Domain.Entities.Genre>> GetAllAsync(int skip, int take, string? search)
     {
-        return await _context.Genres.Where(e=>e.Value != null && e.Value.Contains(search ?? string.Empty)).Skip(skip).Take(take).ToListAsync();
+        return await _context.Genres.Where(e => e.Value != null && e.Value.Contains(search ?? string.Empty)).Skip(skip)
+            .Take(take).ToListAsync();
     }
 
     public async Task<Domain.Entities.Genre?> QueryAsync(Expression<Func<Domain.Entities.Genre, bool>> predicate)

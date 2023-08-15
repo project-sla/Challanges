@@ -12,11 +12,12 @@ public class SurveyTypeService : ISurveyTypeService
         _context = context;
     }
 
-    public async Task<Domain.Entities.Survey.SurveyType> CreateSurveyTypeAsync(Domain.Entities.Survey.SurveyType surveyTypeData)
+    public async Task<Domain.Entities.Survey.SurveyType> CreateSurveyTypeAsync(
+        Domain.Entities.Survey.SurveyType surveyTypeData)
     {
         var surveyType = new Domain.Entities.Survey.SurveyType(
-            value:surveyTypeData.Value!,
-            createdBy:surveyTypeData.CreatedBy
+            surveyTypeData.Value!,
+            surveyTypeData.CreatedBy
         );
         await _context.SurveyTypes.AddAsync(surveyType);
         await _context.SaveChangesAsync();
@@ -35,7 +36,8 @@ public class SurveyTypeService : ISurveyTypeService
         return surveyType;
     }
 
-    public async Task<Domain.Entities.Survey.SurveyType> UpdateSurveyTypeAsync(Domain.Entities.Survey.SurveyType surveyTypeData)
+    public async Task<Domain.Entities.Survey.SurveyType> UpdateSurveyTypeAsync(
+        Domain.Entities.Survey.SurveyType surveyTypeData)
     {
         var surveyType = await _context.SurveyTypes.FindAsync(surveyTypeData.Id);
         if (surveyType is null) throw new Exception($"SurveyType {surveyTypeData.Value} not found");

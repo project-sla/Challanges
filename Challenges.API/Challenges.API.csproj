@@ -8,19 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FastEndpoints" Version="5.14.0" />
-      <PackageReference Include="FastEndpoints.Security" Version="5.14.0" />
-      <PackageReference Include="FastEndpoints.Swagger" Version="5.14.0" />
+        <PackageReference Include="FastEndpoints" Version="5.14.0"/>
+        <PackageReference Include="FastEndpoints.Security" Version="5.14.0"/>
+        <PackageReference Include="FastEndpoints.Swagger" Version="5.14.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Challenges.Application\Challenges.Application.csproj" />
+        <ProjectReference Include="..\Challenges.Application\Challenges.Application.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

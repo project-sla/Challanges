@@ -11,12 +11,13 @@ namespace Challenges.Application.Handlers.AnswerQuestions;
 
 public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, AnswerQuestionsResponse>
 {
-    private readonly ISurveyService _surveyService;
-    private readonly IQuestionService _questionService;
-    private readonly IQuestionAnswerService _questionAnswerService;
     private readonly IChallengeRequestService _challengeRequestService;
+    private readonly IQuestionAnswerService _questionAnswerService;
+    private readonly IQuestionService _questionService;
+    private readonly ISurveyService _surveyService;
 
-    public AnswerQuestionsHandler(ISurveyService surveyService, IQuestionService questionService, IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
+    public AnswerQuestionsHandler(ISurveyService surveyService, IQuestionService questionService,
+        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
     {
         _surveyService = surveyService;
         _questionService = questionService;
@@ -27,19 +28,32 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
     public async Task<AnswerQuestionsResponse> ExecuteAsync(AnswerQuestionsCommand command, CancellationToken ct)
     {
         var challengeR = await _challengeRequestService.GetAsync(command.Survey.ReceivedBy, command.Survey.Id);
-        if (challengeR is null) return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Challenge request not found"),null);
+        if (challengeR is null)
+            return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Challenge request not found"), null);
         var survey = await _surveyService.GetAsync(command.Survey.Id);
-        if (survey is null) return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Survey not found"),null);
+        if (survey is null)
+            return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Survey not found"), null);
         var questions = await _questionService.GetAsync(command.Survey.Questions.Select(x => x.Id).ToList());
-        if (questions is null) return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Questions not found"),null);
-        var questionAnswers = await _questionAnswerService.GetAsync(command.Survey.Questions.Select(x => x.AnswerId).ToList());
-        if (questionAnswers is null) return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Question answers not found"),null);
+        if (questions is null)
+            return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Questions not found"), null);
+        var questionAnswers =
+            await _questionAnswerService.GetAsync(command.Survey.Questions.Select(x => x.AnswerId).ToList());
+        if (questionAnswers is null)
+            return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Question answers not found"), null);
 
         var trueAnswers = questionAnswers.Where(x => x is { IsCorrect: true }).ToList();
         var falseAnswers = questionAnswers.Where(x => x is { IsCorrect: false }).ToList();
         var answerResults = new List<List<AnswerData>>();
-        var trueAnswerList = (from answer in trueAnswers let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId) where question is not null select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy, answer.IsCorrect)).ToList();
-        var falseAnswerList = (from answer in falseAnswers let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId) where question is not null select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy, answer.IsCorrect)).ToList();
+        var trueAnswerList = (from answer in trueAnswers
+            let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId)
+            where question is not null
+            select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy,
+                answer.IsCorrect)).ToList();
+        var falseAnswerList = (from answer in falseAnswers
+            let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId)
+            where question is not null
+            select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy,
+                answer.IsCorrect)).ToList();
         answerResults.Add(trueAnswerList);
         answerResults.Add(falseAnswerList);
         var result = new Result(true, null, survey, 200, "Survey answered successfully");
@@ -52,6 +66,5 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
 
         await _challengeRequestService.UpdateAsync(challengeRequests);
         return new AnswerQuestionsResponse(result, answerResults);
-
     }
 }

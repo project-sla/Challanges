@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Genre.GetGenre;
 
 public record GetGenreCommand(
-        Guid Id
-    ) : ICommand<GetGenreResponse>;
+    Guid Id
+) : ICommand<GetGenreResponse>;

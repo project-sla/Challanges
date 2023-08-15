@@ -10,7 +10,7 @@ public class SurveyTypeBusinessRules
     {
         _surveyTypeService = surveyTypeService;
     }
-    
+
     public async Task<bool> SurveyTypeExistsAsync(string value)
     {
         var surveyType = await _surveyTypeService.GetSurveyTypeAsync(value);

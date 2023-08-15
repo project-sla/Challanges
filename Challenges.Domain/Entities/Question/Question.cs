@@ -9,7 +9,7 @@ public class Question : Base
     {
     }
 
-    public Question(string? content, Base questionType,Guid createdBy)
+    public Question(string? content, Base questionType, Guid createdBy)
     {
         Content = content;
         CreatedBy = createdBy;

@@ -12,7 +12,8 @@ public class QuestionTypeService : IQuestionTypeService
         _context = context;
     }
 
-    public async Task<Domain.Entities.Question.QuestionType?> UpdateAsync(Domain.Entities.Question.QuestionType? questionType)
+    public async Task<Domain.Entities.Question.QuestionType?> UpdateAsync(
+        Domain.Entities.Question.QuestionType? questionType)
     {
         if (questionType == null) return null;
         _context.QuestionTypes.Update(questionType);
@@ -62,6 +63,7 @@ public class QuestionTypeService : IQuestionTypeService
     public async Task<List<Domain.Entities.Question.QuestionType>> GetAllAsync(int skip, int take, string? search)
     {
         if (string.IsNullOrWhiteSpace(search)) return await _context.QuestionTypes.Skip(skip).Take(take).ToListAsync();
-        return await _context.QuestionTypes.Where(qt => qt.Value != null && qt.Value.Contains(search)).Skip(skip).Take(take).ToListAsync();
+        return await _context.QuestionTypes.Where(qt => qt.Value != null && qt.Value.Contains(search)).Skip(skip)
+            .Take(take).ToListAsync();
     }
 }

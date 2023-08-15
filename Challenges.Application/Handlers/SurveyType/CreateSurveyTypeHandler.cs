@@ -6,11 +6,13 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.SurveyType;
 
-public class CreateSurveyTypeHandler : ICommandHandler<CreateSurveyTypeCommand,CreateSurveyTypeResponse>
+public class CreateSurveyTypeHandler : ICommandHandler<CreateSurveyTypeCommand, CreateSurveyTypeResponse>
 {
-    private readonly ISurveyTypeService _surveyTypeService;
     private readonly SurveyTypeBusinessRules _surveyTypeBusinessRules;
-    public CreateSurveyTypeHandler(ISurveyTypeService surveyTypeService, SurveyTypeBusinessRules surveyTypeBusinessRules)
+    private readonly ISurveyTypeService _surveyTypeService;
+
+    public CreateSurveyTypeHandler(ISurveyTypeService surveyTypeService,
+        SurveyTypeBusinessRules surveyTypeBusinessRules)
     {
         _surveyTypeService = surveyTypeService;
         _surveyTypeBusinessRules = surveyTypeBusinessRules;
@@ -23,10 +25,13 @@ public class CreateSurveyTypeHandler : ICommandHandler<CreateSurveyTypeCommand,C
         if (surveyTypeExists)
         {
             message.Add($"SurveyType {command.SurveyTypeData.Value} already exists");
-            return new CreateSurveyTypeResponse(new Result(false,"SurveyType already exists",command.SurveyTypeData.Value,409,"Conflict"));
+            return new CreateSurveyTypeResponse(new Result(false, "SurveyType already exists",
+                command.SurveyTypeData.Value, 409, "Conflict"));
         }
-        var surveyType = new Domain.Entities.Survey.SurveyType(command.SurveyTypeData.Value, command.SurveyTypeData.CreatedBy);
+
+        var surveyType =
+            new Domain.Entities.Survey.SurveyType(command.SurveyTypeData.Value, command.SurveyTypeData.CreatedBy);
         await _surveyTypeService.CreateSurveyTypeAsync(surveyType);
-        return new CreateSurveyTypeResponse(new Result(true,"SurveyType created",surveyType,201,"Created"));
+        return new CreateSurveyTypeResponse(new Result(true, "SurveyType created", surveyType, 201, "Created"));
     }
 }

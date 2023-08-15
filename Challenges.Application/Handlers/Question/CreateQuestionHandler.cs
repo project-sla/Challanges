@@ -19,8 +19,7 @@ public class CreateQuestionHandler : ICommandHandler<CreateQuestionsCommand, Cre
 
     public async Task<CreateQuestionsResponse> ExecuteAsync(CreateQuestionsCommand command, CancellationToken ct)
     {
-        foreach(var question in command.Questions)
-        {
+        foreach (var question in command.Questions)
             if (question.QuestionTypeId != null)
             {
                 var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId.Value);
@@ -32,9 +31,9 @@ public class CreateQuestionHandler : ICommandHandler<CreateQuestionsCommand, Cre
             else
             {
                 if (question.Value != null)
-                    await _questionService.CreateAsync(value: question.Value);
+                    await _questionService.CreateAsync(question.Value);
             }
-        }
+
         return new CreateQuestionsResponse(new Result(true, null, null, 200, "Questions created"));
     }
 }

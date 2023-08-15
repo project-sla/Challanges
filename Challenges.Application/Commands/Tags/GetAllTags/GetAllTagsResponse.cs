@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Tags.GetAllTags;
 
 public record GetAllTagsResponse(
-        Result Result
+    Result Result
 );

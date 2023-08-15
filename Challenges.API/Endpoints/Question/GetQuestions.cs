@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Question;
 
-public class GetQuestions : Endpoint<GetQuestionsCommand,GetQuestionsResponse>
+public class GetQuestions : Endpoint<GetQuestionsCommand, GetQuestionsResponse>
 {
     public override void Configure()
     {
@@ -13,7 +13,8 @@ public class GetQuestions : Endpoint<GetQuestionsCommand,GetQuestionsResponse>
 
     public override async Task HandleAsync(GetQuestionsCommand req, CancellationToken ct)
     {
-        var question = await new GetQuestionsCommand(Page: req.Page, PageSize: req.PageSize, SurveyId: req.SurveyId, CreatedBy: req.CreatedBy, QuestionTypeId: req.QuestionTypeId, QuestionId: req.QuestionId).ExecuteAsync(ct: ct);
+        var question = await new GetQuestionsCommand(req.Page, req.PageSize, req.SurveyId, req.CreatedBy,
+            req.QuestionTypeId, req.QuestionId).ExecuteAsync(ct);
         await SendAsync(question, cancellation: ct);
     }
 }

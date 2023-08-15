@@ -8,8 +8,8 @@ namespace Challenges.Application.Handlers.Survey;
 
 public class AddGenresToSurveyHandler : ICommandHandler<AddGenresToSurveyCommand, AddGenresToSurveyResponse>
 {
-    private readonly ISurveyService _surveyService;
     private readonly IGenreService _genreService;
+    private readonly ISurveyService _surveyService;
 
     public AddGenresToSurveyHandler(ISurveyService surveyService, IGenreService genreService)
     {

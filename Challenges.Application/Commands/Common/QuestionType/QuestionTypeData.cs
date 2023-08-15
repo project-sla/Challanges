@@ -4,4 +4,4 @@ public record QuestionTypeData(
     Guid? Id,
     string? Value,
     Guid? CreatedBy
-    );
+);

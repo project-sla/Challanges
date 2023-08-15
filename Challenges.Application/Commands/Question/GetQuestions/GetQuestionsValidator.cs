@@ -14,6 +14,5 @@ public class GetQuestionsValidator : Validator<GetQuestionsCommand>
         RuleFor(x => x.PageSize)
             .GreaterThanOrEqualTo(1)
             .WithMessage("PageSize must be greater than or equal to 1");
-    
     }
 }

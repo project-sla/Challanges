@@ -4,5 +4,5 @@ using FastEndpoints;
 namespace Challenges.Application.Commands.Survey.CreateSurvey;
 
 public record CreateSurveyCommand(
-        SurveyData SurveyData
+    SurveyData SurveyData
 ) : ICommand<CreateSurveyResponse>;

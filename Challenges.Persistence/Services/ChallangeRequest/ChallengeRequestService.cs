@@ -35,8 +35,8 @@ public class ChallengeRequestService : IChallengeRequestService
 
     public async Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy)
     {
-        var challengeR= await _context.ChallengeRequests
-            .Where(e=>e.ReceivedBy == receivedBy &&  e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
+        var challengeR = await _context.ChallengeRequests
+            .Where(e => e.ReceivedBy == receivedBy && e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
             .ToListAsync();
         return challengeR;
     }
@@ -44,7 +44,8 @@ public class ChallengeRequestService : IChallengeRequestService
     public async Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy, Guid surveyId)
     {
         var challengeR = await _context.ChallengeRequests
-            .Where(e => e.ReceivedBy == receivedBy && e.SurveyId == surveyId && e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
+            .Where(e => e.ReceivedBy == receivedBy && e.SurveyId == surveyId && e.IsActive.Equals(true) &&
+                        e.IsCompleted.Equals(false))
             .ToListAsync();
         return challengeR;
     }

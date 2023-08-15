@@ -19,7 +19,7 @@ public static class ServiceRegistration
     public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IGenreService, GenreService>();
-        services.AddScoped<ITagService,TagService>();
+        services.AddScoped<ITagService, TagService>();
         services.AddScoped<IQuestionAnswerService, QuestionAnswerService>();
         services.AddScoped<ISurveyService, SurveyService>();
         services.AddScoped<ISurveyTypeService, SurveyTypeService>();

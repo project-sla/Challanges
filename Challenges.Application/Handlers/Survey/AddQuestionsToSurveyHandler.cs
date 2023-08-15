@@ -17,15 +17,16 @@ public class AddQuestionsToSurveyHandler : ICommandHandler<AddQuestionsToSurveyC
         _surveyService = surveyService;
     }
 
-    public async Task<AddQuestionsToSurveyResponse> ExecuteAsync(AddQuestionsToSurveyCommand command, CancellationToken ct)
+    public async Task<AddQuestionsToSurveyResponse> ExecuteAsync(AddQuestionsToSurveyCommand command,
+        CancellationToken ct)
     {
-          var survey = await _surveyService.GetAsync(command.SurveyId!.Value);
-            if (survey == null)
-                return new AddQuestionsToSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
-            var questions = await _questionService.GetAsync(command.Questions!.Select(x => x.Id!.Value).ToList());
-            if (command.Questions != null && questions.Count != command.Questions.Count)
-                return new AddQuestionsToSurveyResponse(new Result(false, null, null, 400, "Not all questions were found"));
-            await _surveyService.AddQuestionsAsync(survey, questions);
-            return new AddQuestionsToSurveyResponse(new Result(true, null, survey, 200, "Questions added to survey"));
+        var survey = await _surveyService.GetAsync(command.SurveyId!.Value);
+        if (survey == null)
+            return new AddQuestionsToSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
+        var questions = await _questionService.GetAsync(command.Questions!.Select(x => x.Id!.Value).ToList());
+        if (command.Questions != null && questions.Count != command.Questions.Count)
+            return new AddQuestionsToSurveyResponse(new Result(false, null, null, 400, "Not all questions were found"));
+        await _surveyService.AddQuestionsAsync(survey, questions);
+        return new AddQuestionsToSurveyResponse(new Result(true, null, survey, 200, "Questions added to survey"));
     }
 }

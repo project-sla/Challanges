@@ -8,7 +8,7 @@ public class Survey : Base
     {
     }
 
-    public Survey(Base surveyType, string content,Guid createdBy)
+    public Survey(Base surveyType, string content, Guid createdBy)
     {
         SurveyTypeId = surveyType.Id;
         CreatedBy = createdBy;

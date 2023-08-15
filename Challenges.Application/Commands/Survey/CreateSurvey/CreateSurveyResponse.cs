@@ -3,5 +3,5 @@
 namespace Challenges.Application.Commands.Survey.CreateSurvey;
 
 public record CreateSurveyResponse(
-        Result Result
-    );
+    Result Result
+);

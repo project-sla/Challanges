@@ -6,7 +6,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.Tags;
 
-public class GetTagsHandler : ICommandHandler<GetTagsCommand,GetTagsResponse>
+public class GetTagsHandler : ICommandHandler<GetTagsCommand, GetTagsResponse>
 {
     private readonly ITagService _tagService;
 
@@ -22,12 +22,12 @@ public class GetTagsHandler : ICommandHandler<GetTagsCommand,GetTagsResponse>
         {
             case null when command.Id is not null:
                 tags = await _tagService.GetAsync(command.Id.Value);
-                return new GetTagsResponse(new Result(true,null, tags, 200, "Tag retrieved successfully."));
+                return new GetTagsResponse(new Result(true, null, tags, 200, "Tag retrieved successfully."));
             case null:
                 return new GetTagsResponse(new Result(false, null, null, 400, "Tag not found."));
             default:
                 tags = await _tagService.GetAsync(command.Value);
-                return new GetTagsResponse(new Result(true,null, tags, 200, "Tags retrieved successfully."));
+                return new GetTagsResponse(new Result(true, null, tags, 200, "Tags retrieved successfully."));
         }
     }
 }

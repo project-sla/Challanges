@@ -3,4 +3,4 @@
 public record TagsData(
     Guid Id,
     string Value
-    );
+);

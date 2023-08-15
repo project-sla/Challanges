@@ -12,17 +12,19 @@ public class QuestionAnswerService : IQuestionAnswerService
         _context = context;
     }
 
-    public async Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(Domain.Entities.Question.QuestionAnswer questionAnswer)
+    public async Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(
+        Domain.Entities.Question.QuestionAnswer questionAnswer)
     {
-        if(await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
+        if (await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
         await _context.QuestionAnswers.AddAsync(questionAnswer);
         await _context.SaveChangesAsync();
         return questionAnswer;
     }
 
-    public async Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(Domain.Entities.Question.QuestionAnswer questionAnswer, Domain.Entities.Question.Question question)
+    public async Task<Domain.Entities.Question.QuestionAnswer?> CreateAsync(
+        Domain.Entities.Question.QuestionAnswer questionAnswer, Domain.Entities.Question.Question question)
     {
-        if(await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
+        if (await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
         await _context.Entry(questionAnswer).Reference(q => q.Question).LoadAsync();
         questionAnswer.Question = question;
         await _context.QuestionAnswers.AddAsync(questionAnswer);
@@ -30,15 +32,16 @@ public class QuestionAnswerService : IQuestionAnswerService
         return questionAnswer;
     }
 
-    public async Task<Domain.Entities.Question.QuestionAnswer?> UpdateAsync(Domain.Entities.Question.QuestionAnswer? questionAnswer)
+    public async Task<Domain.Entities.Question.QuestionAnswer?> UpdateAsync(
+        Domain.Entities.Question.QuestionAnswer? questionAnswer)
     {
         if (questionAnswer == null) return null;
-        if(await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
+        if (await _context.QuestionAnswers.AnyAsync(x => x.Id == questionAnswer.Id)) return null;
         _context.QuestionAnswers.Update(questionAnswer);
         await _context.SaveChangesAsync();
         return questionAnswer;
     }
-    
+
     public async Task<Domain.Entities.Question.QuestionAnswer?> GetAsync(Guid id)
     {
         return await _context.QuestionAnswers.FindAsync(id);
@@ -72,6 +75,7 @@ public class QuestionAnswerService : IQuestionAnswerService
     public async Task<List<Domain.Entities.Question.QuestionAnswer?>> GetAllAsync(int skip, int take, string? search)
     {
         if (search == null) return await _context.QuestionAnswers.Skip(skip).Take(take).ToListAsync();
-        return await _context.QuestionAnswers.Where(x => x.Content != null && x.Content.Contains(search)).Skip(skip).Take(take).ToListAsync();
+        return await _context.QuestionAnswers.Where(x => x.Content != null && x.Content.Contains(search)).Skip(skip)
+            .Take(take).ToListAsync();
     }
 }

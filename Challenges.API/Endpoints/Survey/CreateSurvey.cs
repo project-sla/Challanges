@@ -3,7 +3,7 @@ using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Survey;
 
-public class CreateSurvey : Endpoint<CreateSurveyCommand,CreateSurveyResponse>
+public class CreateSurvey : Endpoint<CreateSurveyCommand, CreateSurveyResponse>
 {
     public override void Configure()
     {
@@ -13,7 +13,7 @@ public class CreateSurvey : Endpoint<CreateSurveyCommand,CreateSurveyResponse>
 
     public override async Task HandleAsync(CreateSurveyCommand req, CancellationToken ct)
     {
-        var survey = await new CreateSurveyCommand(req.SurveyData).ExecuteAsync(ct: ct);
+        var survey = await new CreateSurveyCommand(req.SurveyData).ExecuteAsync(ct);
         await SendAsync(survey, cancellation: ct);
     }
 }

@@ -6,7 +6,7 @@ using FastEndpoints;
 
 namespace Challenges.Application.Handlers.Tags;
 
-public class GetAllTagsHandler : ICommandHandler<GetAllTagsCommand,GetAllTagsResponse>
+public class GetAllTagsHandler : ICommandHandler<GetAllTagsCommand, GetAllTagsResponse>
 {
     private readonly ITagService _tagService;
 
@@ -21,9 +21,10 @@ public class GetAllTagsHandler : ICommandHandler<GetAllTagsCommand,GetAllTagsRes
         if (command.SearchTerm is null)
         {
             tags = await _tagService.GetAllAsync(command.PageNumber, command.PageSize);
-            return new GetAllTagsResponse(new Result(true,null, tags, 200, "Tags retrieved successfully."));
+            return new GetAllTagsResponse(new Result(true, null, tags, 200, "Tags retrieved successfully."));
         }
+
         tags = await _tagService.GetAllAsync(command.PageNumber, command.PageSize, command.SearchTerm);
-        return new GetAllTagsResponse(new Result(true,null, tags, 200, "Tags retrieved successfully."));
+        return new GetAllTagsResponse(new Result(true, null, tags, 200, "Tags retrieved successfully."));
     }
 }
