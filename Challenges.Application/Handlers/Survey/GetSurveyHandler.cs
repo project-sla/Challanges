@@ -37,7 +37,9 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand, GetSurveyRespo
             var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
 
             var questionDtos = new List<QuestionData>();
-            foreach (var question in questions)
+            if (questions is null) return new GetSurveyResponse(new Result(false, null, null, 400, "Questions not found"));
+            var ql =questions.OrderBy(e => e.CreatedAt);
+            foreach (var question in ql)
             {
                 var questionDto = new QuestionData(question.Id, question.CreatedBy,
                     new QuestionTypeData(question.QuestionTypeId, question.Content, question.CreatedBy),
@@ -52,7 +54,8 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand, GetSurveyRespo
 
                 questionDtos.Add(questionDto);
             }
-
+            
+            //surveyResponse.OrderBy(e => e.Questions);
             surveyResponse.Add(new SurveyDto(survey.Id,
                 new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos));
         }
