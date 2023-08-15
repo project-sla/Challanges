@@ -56,9 +56,7 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
                 var answerResponse = new AnswerResponse(newAnswerEntity.Id,newAnswerEntity.Content,newAnswerEntity.Order,newAnswerEntity.IsCorrect);
                 questionResponse.Answers.Add(answerResponse);
             }
-
-            var questionObj = new Domain.Entities.Question.Question(question.Content,questionType,command.Survey.CreatedBy);
-            questionEntList.Add(questionObj);
+            questionEntList.Add(newQuestionEntity);
             surveyResponse.Questions.Add(questionResponse);
         }
 
