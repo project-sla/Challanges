@@ -16,7 +16,8 @@ public class ShowChallengeRequestsHandler : ICommandHandler<ShowChallengeRequest
 
     public async Task<ShowChallengeRequestsResponse> ExecuteAsync(ShowChallengeRequestsCommand command, CancellationToken ct)
     {
-        var challengeRequests = await _challengeRequestService.GetAsync(command.ReceivedBy, command.SurveyId);
+        var challengeRequests = await _challengeRequestService.GetAsync(command.ReceivedBy); 
+        if(challengeRequests is null) challengeRequests = await _challengeRequestService.GetAsync(command.ReceivedBy,command.SurveyId);
         if (challengeRequests is null) return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Challenge request not found"));
         var result = new Result(true, null, challengeRequests, 200, "Challenge request found");
         return new ShowChallengeRequestsResponse(result);

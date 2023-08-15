@@ -1,8 +1,6 @@
-﻿using System.Diagnostics;
-using Challenges.Application.Commands.AnswerQuestions;
+﻿using Challenges.Application.Commands.AnswerQuestions;
 using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.Common.Answer;
-using Challenges.Application.Commands.Common.Question;
 using Challenges.Persistence.Services.ChallangeRequest;
 using Challenges.Persistence.Services.Question;
 using Challenges.Persistence.Services.QuestionAnswer;
@@ -37,17 +35,22 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
         var questionAnswers = await _questionAnswerService.GetAsync(command.Survey.Questions.Select(x => x.AnswerId).ToList());
         if (questionAnswers is null) return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Question answers not found"),null);
 
-        var trueAnswers = questionAnswers.Where(x => x != null && x.IsCorrect).ToList();
-        var falseAnswers = questionAnswers.Where(x => x != null && !x.IsCorrect).ToList();
+        var trueAnswers = questionAnswers.Where(x => x is { IsCorrect: true }).ToList();
+        var falseAnswers = questionAnswers.Where(x => x is { IsCorrect: false }).ToList();
         var answerResults = new List<List<AnswerData>>();
         var trueAnswerList = (from answer in trueAnswers let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId) where question is not null select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy, answer.IsCorrect)).ToList();
         var falseAnswerList = (from answer in falseAnswers let question = questions.FirstOrDefault(x => x.Id == answer.QuestionId) where question is not null select new AnswerData(answer.Id, question.Id, answer.Order, answer.Content, answer.CreatedBy, answer.IsCorrect)).ToList();
         answerResults.Add(trueAnswerList);
         answerResults.Add(falseAnswerList);
         var result = new Result(true, null, survey, 200, "Survey answered successfully");
-        challengeR.Complete();
-        challengeR.DeActivate();
-        await _challengeRequestService.UpdateAsync(challengeR);
+        var challengeRequests = challengeR.Select(e =>
+        {
+            e.Complete();
+            e.DeActivate();
+            return e;
+        }).ToList();
+
+        await _challengeRequestService.UpdateAsync(challengeRequests);
         return new AnswerQuestionsResponse(result, answerResults);
 
     }

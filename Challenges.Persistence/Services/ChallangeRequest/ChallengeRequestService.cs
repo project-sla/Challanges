@@ -27,20 +27,26 @@ public class ChallengeRequestService : IChallengeRequestService
         return challengeRequest;
     }
 
-    public async Task<ChallengeRequest?> GetAsync(Guid receivedBy)
+    public async Task UpdateAsync(List<ChallengeRequest> challengeRequests)
+    {
+        _context.ChallengeRequests.UpdateRange(challengeRequests);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy)
     {
         var challengeR= await _context.ChallengeRequests
-            .Where(e=>e.ReceivedBy == receivedBy)
+            .Where(e=>e.ReceivedBy == receivedBy &&  e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
             .OrderDescending()
-            .FirstOrDefaultAsync();
+            .ToListAsync();
         return challengeR;
     }
 
-    public async Task<ChallengeRequest?> GetAsync(Guid receivedBy, Guid surveyId)
+    public async Task<List<ChallengeRequest>?> GetAsync(Guid receivedBy, Guid surveyId)
     {
         var challengeR = await _context.ChallengeRequests
-            .Where(e => e.ReceivedBy == receivedBy && e.SurveyId == surveyId)
-            .FirstOrDefaultAsync();
+            .Where(e => e.ReceivedBy == receivedBy && e.SurveyId == surveyId && e.IsActive.Equals(true) && e.IsCompleted.Equals(false))
+            .ToListAsync();
         return challengeR;
     }
 
