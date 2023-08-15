@@ -64,6 +64,6 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand,GetSurveyRespon
                 new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos));
         }
 
-        return surveyList == null ? new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found")) : new GetSurveyResponse(new Result(true, null, surveyResponse, 200, "Survey found"));
+        return new GetSurveyResponse(new Result(true, null, surveyResponse, 200, "Survey found"));
     }
 }
