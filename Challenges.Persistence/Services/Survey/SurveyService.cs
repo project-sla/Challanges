@@ -182,7 +182,8 @@ public class SurveyService : ISurveyService
     }
 
 
-    public async Task AddQuestionAsync(Domain.Entities.Survey.Survey survey, SurveyQuestion question,int order)
+    public async Task AddQuestionAsync(Domain.Entities.Survey.Survey survey, Domain.Entities.Question.Question question,
+        int order)
     {
         if (await _context.SurveyQuestions.AnyAsync(x => x.SurveyId == survey.Id && x.QuestionId == question.Id)) return;
         survey.Questions ??= new HashSet<SurveyQuestion>();

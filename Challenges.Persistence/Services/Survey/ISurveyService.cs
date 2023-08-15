@@ -19,7 +19,7 @@ public interface ISurveyService
     Task<List<Domain.Entities.Survey.Survey>> GetAllAsync();
     Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
     Task<List<Domain.Entities.Survey.Survey>> GetAllAsync(int skip, int take, string? search, bool includeQuestions = false,bool includeTags = false,bool includeGenres = false);
-    Task AddQuestionAsync(Domain.Entities.Survey.Survey survey,Domain.Entities.Survey.SurveyQuestion question,int order);
+    Task AddQuestionAsync(Domain.Entities.Survey.Survey survey, Domain.Entities.Question.Question question, int order);
     Task AddQuestionsAsync(Domain.Entities.Survey.Survey survey, List<Domain.Entities.Question.Question> questions);
     Task AddTagAsync(Domain.Entities.Survey.Survey survey,Domain.Entities.Survey.SurveyTag tag);
     Task AddTagsAsync(Domain.Entities.Survey.Survey survey,IEnumerable<Tag> tags);

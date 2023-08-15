@@ -8,7 +8,7 @@ public class SurveyQuestion : Base
     {
         
     }
-    public SurveyQuestion(Base survey,Base question,int order)
+    public SurveyQuestion(Survey survey,Question.Question question,int order)
     {
         SurveyId = survey.Id;
         QuestionId = question.Id;
