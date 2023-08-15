@@ -8,7 +8,7 @@ public class Base
     {
     }
 
-    public Base(Guid? id = null, Guid createdBy = default)
+    protected Base(Guid? id = null, Guid createdBy = default)
     {
         Id = id ?? Guid.NewGuid();
         CreatedBy = createdBy;

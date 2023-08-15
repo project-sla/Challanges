@@ -8,7 +8,7 @@ public class ChallengeRequest : Base
     {
         
     }
-    public ChallengeRequest(Survey survey, Guid createdBy, Guid receivedBy) : base(createdBy)
+    public ChallengeRequest(Survey survey, Guid createdBy, Guid receivedBy, Guid? id = null) : base(id,createdBy)
     {
         SurveyId = survey.Id;
         Survey = survey;

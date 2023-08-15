@@ -1,4 +1,5 @@
-﻿using Challenges.Application.Commands.Common;
+﻿using System.Diagnostics;
+using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.PrepareQuestions;
 using Challenges.Domain.Entities.Question;
 using Challenges.Domain.Entities.Survey;
@@ -61,8 +62,11 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         }
 
         await _surveyService.AddQuestionsAsync(newSurveyEntity,questionEntList);
-        var challengeRequest = new ChallengeRequest(newSurveyEntity,command.Survey.CreatedBy,command.Survey.ReceivedBy);
+        var challengeRequest = new ChallengeRequest(newSurveyEntity,newSurveyEntity.CreatedBy,command.Survey.ReceivedBy);
         challengeRequest.Activate();
+        Debug.WriteLine(newSurveyEntity);
+        Debug.WriteLine(challengeRequest);
+        
         await _challengeRequestService.CreateAsync(challengeRequest);
         return new PrepareQuestionsCommandResponse(new Result(
                 true,
