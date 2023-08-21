@@ -42,7 +42,7 @@ public class ShowChallengeRequestsHandler : ICommandHandler<ShowChallengeRequest
 
         if (resultObj.Count == 0)
             return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Challenge request not found"));
-        var result = new Result(true, null, null, 200, "Challenge request successfully fetched");
+        var result = new Result(true, null, resultObj, 200, "Challenge request successfully fetched");
         return new ShowChallengeRequestsResponse(result);
     }
 }

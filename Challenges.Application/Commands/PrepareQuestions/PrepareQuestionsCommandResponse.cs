@@ -9,7 +9,7 @@ public record PrepareQuestionsCommandResponse(
 
 public record SurveyResponse(
     Guid Id,
-    string Content,
+    string? Content,
     Guid CreatedBy,
     Guid SurveyTypeId,
     double Time,
@@ -19,14 +19,14 @@ public record SurveyResponse(
 
 public record QuestionResponse(
     Guid Id,
-    string Content,
+    string? Content,
     Guid QuestionTypeId,
     List<AnswerResponse> Answers
 );
 
 public record AnswerResponse(
     Guid Id,
-    string Content,
+    string? Content,
     int Order,
     bool IsCorrect
 );

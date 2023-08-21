@@ -95,12 +95,16 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         await _challengeRequestService.CreateAsync(challengeRequest);
         var notificationType = await _notificationTypeService.GetNotificationType("Challenge Request") ??
                                new NotificationType("Challenge Request");
-        var notificationDetail = new NotificationDetail(notificationType, receivedAccount?.FcmToken,
+        var notificationDetail = new NotificationDetail(notificationType, receivedAccount.FcmToken,
             receivedAccount.IsAndroidDevice, "Challenge Request",
-            $"{senderAccount.UserName} sent you a challenge request.");
-        notificationDetail.NotificationType = notificationType;
-        var notification = new Notification(command.Survey.ReceivedBy, true, true, notificationDetail);
-        notification.NotificationDetail = notificationDetail;
+            $"{senderAccount.UserName} sent you a challenge request.")
+        {
+            NotificationType = notificationType
+        };
+        var notification = new Notification(command.Survey.ReceivedBy, true, true, notificationDetail)
+            {
+                NotificationDetail = notificationDetail
+            };
         await _notificationService.SendNotification(notification);
         return new PrepareQuestionsCommandResponse(new Result(
             true,
