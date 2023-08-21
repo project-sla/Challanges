@@ -8,5 +8,6 @@ public class NotificationType : Base
     {
         Type = type;
     }
+
     public string Type { get; set; }
 }

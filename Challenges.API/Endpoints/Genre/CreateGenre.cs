@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using Challenges.Application.Commands.Account.GetAllAccounts;
-using Challenges.Application.Commands.Genre.CreateGenre;
+﻿using Challenges.Application.Commands.Genre.CreateGenre;
 using FastEndpoints;
 
 namespace Challenges.API.Endpoints.Genre;

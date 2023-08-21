@@ -1,11 +1,9 @@
-﻿using Challenges.Application.Commands.Account.GetAllAccounts;
-using Challenges.Application.Commands.Common;
+﻿using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.PrepareQuestions;
 using Challenges.Application.Helpers.GetAllAccounts;
 using Challenges.Domain.Entities;
 using Challenges.Domain.Entities.Question;
 using Challenges.Domain.Entities.Survey;
-using Challenges.Domain.Enum;
 using Challenges.Persistence.Services.ChallangeRequest;
 using Challenges.Persistence.Services.Notification;
 using Challenges.Persistence.Services.Question;
@@ -20,17 +18,18 @@ namespace Challenges.Application.Handlers.PrepareQuestions;
 public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, PrepareQuestionsCommandResponse>
 {
     private readonly IChallengeRequestService _challengeRequestService;
+    private readonly INotificationService _notificationService;
+    private readonly INotificationTypeService _notificationTypeService;
     private readonly IQuestionAnswerService _questionAnswerService;
     private readonly IQuestionService _questionService;
     private readonly IQuestionTypeService _questionTypeService;
-    private readonly INotificationService _notificationService;
-    private readonly INotificationTypeService _notificationTypeService;
     private readonly ISurveyService _surveyService;
     private readonly ISurveyTypeService _surveyTypeService;
 
     public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService,
         IQuestionService questionService, IQuestionTypeService questionTypeService,
-        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService, INotificationTypeService notificationTypeService, INotificationService notificationService)
+        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService,
+        INotificationTypeService notificationTypeService, INotificationService notificationService)
     {
         _surveyService = surveyService;
         _surveyTypeService = surveyTypeService;
@@ -49,9 +48,11 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
                          await _surveyTypeService.GetSurveyTypeAsync("default");
 
         var newSurveyEntity =
-            new Domain.Entities.Survey.Survey(surveyType!, command.Survey.Content, command.Survey.CreatedBy,command.Survey.Time,command.Survey.TrueQuestionsToWin);
+            new Domain.Entities.Survey.Survey(surveyType!, command.Survey.Content, command.Survey.CreatedBy,
+                command.Survey.Time, command.Survey.TrueQuestionsToWin);
         var surveyResponse = new SurveyResponse(newSurveyEntity.Id, newSurveyEntity.Content, newSurveyEntity.CreatedBy,
-            newSurveyEntity.SurveyTypeId,newSurveyEntity.Time,newSurveyEntity.TrueQuestionsToWin,new List<QuestionResponse>());
+            newSurveyEntity.SurveyTypeId, newSurveyEntity.Time, newSurveyEntity.TrueQuestionsToWin,
+            new List<QuestionResponse>());
         await _surveyService.CreateAsync(newSurveyEntity);
         var questionEntList = new List<Question>();
         foreach (var question in command.Survey.Questions)
@@ -83,10 +84,23 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         challengeRequest.Activate();
         var receivedAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
         var senderAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.CreatedBy.ToString());
+        if (receivedAccount is null || senderAccount is null)
+            return new PrepareQuestionsCommandResponse(new Result(
+                false,
+                null,
+                null,
+                404,
+                "Account not found"
+            ), null);
         await _challengeRequestService.CreateAsync(challengeRequest);
-        var notificationType = await _notificationTypeService.GetNotificationType("Challenge Request") ?? new NotificationType("Challenge Request");
-        var notificationDetail = new NotificationDetail(notificationType, receivedAccount?.FcmToken, receivedAccount.IsAndroidDevice, "Challenge Request", $"{senderAccount.UserName} sent you a challenge request.");
-        var notification = new Notification(command.Survey.ReceivedBy, true,true,notificationDetail);
+        var notificationType = await _notificationTypeService.GetNotificationType("Challenge Request") ??
+                               new NotificationType("Challenge Request");
+        var notificationDetail = new NotificationDetail(notificationType, receivedAccount?.FcmToken,
+            receivedAccount.IsAndroidDevice, "Challenge Request",
+            $"{senderAccount.UserName} sent you a challenge request.");
+        notificationDetail.NotificationType = notificationType;
+        var notification = new Notification(command.Survey.ReceivedBy, true, true, notificationDetail);
+        notification.NotificationDetail = notificationDetail;
         await _notificationService.SendNotification(notification);
         return new PrepareQuestionsCommandResponse(new Result(
             true,

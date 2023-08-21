@@ -1,5 +1,4 @@
-﻿using Challenges.Application.Commands.Account.GetAllAccounts;
-using Challenges.Application.Extensions.ServiceRegistrations;
+﻿using Challenges.Application.Extensions.ServiceRegistrations;
 using Challenges.Infrastructure.Settings;
 using Challenges.Persistence.Context;
 using Challenges.Persistence.Extensions;

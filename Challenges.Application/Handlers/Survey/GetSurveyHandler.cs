@@ -26,26 +26,27 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand, GetSurveyRespo
 
     public async Task<GetSurveyResponse> ExecuteAsync(GetSurveyCommand command, CancellationToken ct)
     {
-        List<Domain.Entities.Survey.Survey>? surveyList = new();
+        List<Domain.Entities.Survey.Survey?> surveyList = new();
         surveyList.Add(await _surveyService.GetAsync(command.SurveyId!.Value));
-        if (surveyList is null) return new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
+        if (surveyList.Count == 0) return new GetSurveyResponse(new Result(false, null, null, 400, "Survey not found"));
         List<SurveyDto> surveyResponse = new();
 
         foreach (var survey in surveyList)
         {
-            var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey.SurveyTypeId);
+            var surveyType = await _surveyTypeService.GetSurveyTypeAsync(survey!.SurveyTypeId);
             var questions = await _questionService.GetQuestionsBySurveyIdAsync(survey.Id);
 
             var questionDtos = new List<QuestionData>();
-            if (questions is null) return new GetSurveyResponse(new Result(false, null, null, 400, "Questions not found"));
-            var ql =questions.OrderBy(e => e.CreatedAt);
+            if (questions.Count == 0)
+                return new GetSurveyResponse(new Result(false, null, null, 400, "Questions not found"));
+            var ql = questions.OrderBy(e => e.CreatedAt);
             foreach (var question in ql)
             {
                 var questionDto = new QuestionData(question.Id, question.CreatedBy,
                     new QuestionTypeData(question.QuestionTypeId, question.Content, question.CreatedBy),
-                    question.Content, new List<AnswerData>());
+                    question.Content!, new List<AnswerData>());
 
-                foreach (var qq in question.Answers)
+                foreach (var qq in question.Answers!)
                 {
                     var answerDto = new AnswerData(qq.Id, qq.QuestionId, qq.Order, qq.Content, qq.CreatedBy,
                         qq.IsCorrect);
@@ -54,7 +55,7 @@ public class GetSurveyHandler : ICommandHandler<GetSurveyCommand, GetSurveyRespo
 
                 questionDtos.Add(questionDto);
             }
-            
+
             //surveyResponse.OrderBy(e => e.Questions);
             surveyResponse.Add(new SurveyDto(survey.Id,
                 new SurveyTypeData(surveyType.Id, surveyType.Value, surveyType.CreatedBy), questionDtos));

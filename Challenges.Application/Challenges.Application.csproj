@@ -8,19 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CorePush" Version="4.1.0" />
+        <PackageReference Include="CorePush" Version="4.1.0"/>
         <PackageReference Include="FastEndpoints" Version="5.14.0"/>
-        <PackageReference Include="FastEndpoints.Messaging.Remote" Version="5.15.0" />
+        <PackageReference Include="FastEndpoints.Messaging.Remote" Version="5.15.0"/>
         <PackageReference Include="FastEndpoints.Security" Version="5.14.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9"/>
-        <PackageReference Include="RestSharp" Version="110.2.0" />
+        <PackageReference Include="RestSharp" Version="110.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Challenges.Domain\Challenges.Domain.csproj"/>
         <ProjectReference Include="..\Challenges.Persistence\Challenges.Persistence.csproj"/>
     </ItemGroup>
-
 
 
 </Project>

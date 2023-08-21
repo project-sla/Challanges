@@ -6,9 +6,9 @@ public class Notification : Base
 {
     private Notification()
     {
-        
     }
-    public Notification(Guid receivedBy,bool isSent, bool isActive,NotificationDetail notificationDetail)
+
+    public Notification(Guid receivedBy, bool isSent, bool isActive, NotificationDetail notificationDetail)
     {
         ReceivedBy = receivedBy;
         IsSent = isSent;

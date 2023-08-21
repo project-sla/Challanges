@@ -1,9 +1,5 @@
-using System.Diagnostics;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using Challenges.Application.Commands.Account.GetAllAccounts;
-using Microsoft.IdentityModel.Tokens;
 using RestSharp;
 
 namespace Challenges.Application.Helpers.GetAllAccounts;

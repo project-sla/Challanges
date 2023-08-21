@@ -6,6 +6,7 @@ namespace Challenges.Persistence.Services.Notification;
 public class NotificationDetailService : INotificationDetailService
 {
     private readonly ChallengeDbContext _challengeDbContext;
+
     public NotificationDetailService(ChallengeDbContext challengeDbContext)
     {
         _challengeDbContext = challengeDbContext;

@@ -8,5 +8,4 @@ public interface INotificationDetailService
     Task<NotificationDetail?> RemoveNotificationDetail(Guid notificationDetailGuid);
     Task<NotificationDetail?> GetNotificationDetail(Guid notificationDetailGuid);
     Task<NotificationDetail> UpdateNotificationDetail(NotificationDetail notificationDetail);
-    
 }

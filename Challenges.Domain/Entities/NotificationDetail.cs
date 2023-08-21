@@ -7,7 +7,9 @@ public class NotificationDetail : Base
     private NotificationDetail()
     {
     }
-    public NotificationDetail(NotificationType notificationType, string? fcmToken, bool isAndroidDevice, string? title, string? body)
+
+    public NotificationDetail(NotificationType notificationType, string? fcmToken, bool isAndroidDevice, string? title,
+        string? body)
     {
         NotificationTypeId = notificationType.Id;
         FcmToken = fcmToken;
@@ -15,7 +17,7 @@ public class NotificationDetail : Base
         Title = title;
         Body = body;
     }
-    
+
     public string? FcmToken { get; set; }
     public bool IsAndroidDevice { get; set; }
     public string? Title { get; set; }

@@ -8,5 +8,4 @@ public interface INotificationTypeService
     Task<NotificationType?> RemoveNotificationType(Guid notificationTypeGuid);
     Task<NotificationType?> GetNotificationType(Guid notificationTypeGuid);
     Task<NotificationType?> GetNotificationType(string notificationTypeName);
-
 }

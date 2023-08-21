@@ -31,16 +31,15 @@ public class ShowChallengeRequestsHandler : ICommandHandler<ShowChallengeRequest
             var sender = await GetAllAccountHandler.GetAllAccounts(challenge.CreatedBy.ToString());
             if (sender is null)
                 return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Account not found"));
-            Debug.WriteLine(sender);
-            Debug.WriteLine(challengeRequestedAccount);
             var challengeObj = new ChallengeRequestDto(
                 challenge.SurveyId,
                 sender,
                 challengeRequestedAccount,
                 challenge.CreatedAt
-                );
+            );
             resultObj.Add(challengeObj);
         }
+
         if (resultObj.Count == 0)
             return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Challenge request not found"));
         var result = new Result(true, null, null, 200, "Challenge request successfully fetched");

@@ -42,7 +42,8 @@ public class NotificationService : INotificationService
 
     public async Task<List<Domain.Entities.Notification>?> GetNotifications(Guid accountGuid, bool isRead)
     {
-        return await _challengeDbContext.Notifications.Where(e => e.ReceivedBy == accountGuid && e.IsSent == isRead).ToListAsync();
+        return await _challengeDbContext.Notifications.Where(e => e.ReceivedBy == accountGuid && e.IsSent == isRead)
+            .ToListAsync();
     }
 
     public async Task<Domain.Entities.Notification?> GetNotification(Guid accountGuid, Guid notificationGuid)
@@ -64,14 +65,17 @@ public class NotificationService : INotificationService
 
     public async Task<List<Domain.Entities.Notification>?> GetNotifications(Guid accountGuid, int skip, int take)
     {
-        return await _challengeDbContext.Notifications.Where(e => e.ReceivedBy == accountGuid).Skip(skip).Take(take).ToListAsync();
+        return await _challengeDbContext.Notifications.Where(e => e.ReceivedBy == accountGuid).Skip(skip).Take(take)
+            .ToListAsync();
     }
 
     public async Task<Domain.Entities.Notification> SendNotification(Domain.Entities.Notification notification)
     {
-        var firebaseSettingsJson = await File.ReadAllTextAsync("/root/ChallengesCore/Challanges/Challenges.API/solvify-1b4d6-firebase-adminsdk-mpx0g-f73d40077c.json");
+        var firebaseSettingsJson = await File.ReadAllTextAsync(
+            "/root/ChallengesCore/Challanges/Challenges.API/solvify-1b4d6-firebase-adminsdk-mpx0g-f73d40077c.json");
         var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("key", _fcmNotificationSetting.ServerKey);
+        httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("key", _fcmNotificationSetting.ServerKey);
 
         var googleNotification = new GoogleNotification
         {

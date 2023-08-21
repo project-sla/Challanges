@@ -4,7 +4,7 @@ namespace Challenges.Application.Commands.PrepareQuestions;
 
 public record PrepareQuestionsCommandResponse(
     Result Result,
-    SurveyResponse Survey
+    SurveyResponse? Survey
 );
 
 public record SurveyResponse(
