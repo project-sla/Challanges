@@ -69,7 +69,7 @@ public class NotificationService : INotificationService
 
     public async Task<Domain.Entities.Notification> SendNotification(Domain.Entities.Notification notification)
     {
-        var firebaseSettingsJson = await File.ReadAllTextAsync("/Users/experilabs/source/mobileappbackend/Authorization.API/solvify-1b4d6-firebase-adminsdk-mpx0g-f73d40077c.json");
+        var firebaseSettingsJson = await File.ReadAllTextAsync("/root/ChallengesCore/Challanges/Challenges.API/solvify-1b4d6-firebase-adminsdk-mpx0g-f73d40077c.json");
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("key", _fcmNotificationSetting.ServerKey);
 
