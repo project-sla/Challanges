@@ -990,6 +990,7 @@
       },
       "Challenges.Domain/1.0.0": {
         "dependencies": {
+          "Challenges.Infrastructure": "1.0.0",
           "CorePush": "4.1.0",
           "FastEndpoints.Messaging.Remote": "5.15.0",
           "RestSharp": "110.2.0"
