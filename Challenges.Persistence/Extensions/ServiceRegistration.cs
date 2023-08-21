@@ -2,6 +2,7 @@
 using Challenges.Persistence.Services.Answer;
 using Challenges.Persistence.Services.ChallangeRequest;
 using Challenges.Persistence.Services.Genre;
+using Challenges.Persistence.Services.Notification;
 using Challenges.Persistence.Services.Question;
 using Challenges.Persistence.Services.QuestionAnswer;
 using Challenges.Persistence.Services.QuestionType;
@@ -27,7 +28,8 @@ public static class ServiceRegistration
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IAnswerService, AnswerService>();
         services.AddScoped<IChallengeRequestService, ChallengeRequestService>();
-
+        services.AddScoped<INotificationService, NotificationService>();
+        
         services.AddDbContext<ChallengeDbContext>(
             options => options.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value)
         );

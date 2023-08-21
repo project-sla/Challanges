@@ -6,4 +6,19 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+
+
+    <ItemGroup>
+      <PackageReference Include="CorePush" Version="4.1.0" />
+      <PackageReference Include="FastEndpoints.Messaging.Remote" Version="5.15.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+      <PackageReference Include="RestSharp" Version="110.2.0" />
+    </ItemGroup>
+
+
+
+
+
+
+
 </Project>

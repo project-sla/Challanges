@@ -28,6 +28,7 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
 
     public async Task<AnswerQuestionsResponse> ExecuteAsync(AnswerQuestionsCommand command, CancellationToken ct)
     {
+        //var message = new Lis
         var challengeR = await _challengeRequestService.GetAsync(command.Survey.ReceivedBy, command.Survey.Id);
         if (challengeR is null)
             return new AnswerQuestionsResponse(new Result(false, null, null, 404, "Challenge request not found"));
@@ -57,6 +58,10 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
                 answer.IsCorrect)).ToList();
         answerResults.Add("true answers",trueAnswerList.Count);
         answerResults.Add("false answers",falseAnswerList.Count);
+        if (trueAnswers.Count >= survey.TrueQuestionsToWin)
+        {
+            
+        }
         var challengeRequests = challengeR.Select(e =>
         {
             e.Complete();

@@ -1,9 +1,13 @@
-﻿using Challenges.Application.Commands.Common;
+﻿using Challenges.Application.Commands.Account.GetAllAccounts;
+using Challenges.Application.Commands.Common;
 using Challenges.Application.Commands.PrepareQuestions;
+using Challenges.Application.Helpers.GetAllAccounts;
+using Challenges.Domain.Entities;
 using Challenges.Domain.Entities.Question;
 using Challenges.Domain.Entities.Survey;
-using Challenges.Persistence.Services.Answer;
+using Challenges.Domain.Enum;
 using Challenges.Persistence.Services.ChallangeRequest;
+using Challenges.Persistence.Services.Notification;
 using Challenges.Persistence.Services.Question;
 using Challenges.Persistence.Services.QuestionAnswer;
 using Challenges.Persistence.Services.QuestionType;
@@ -19,13 +23,14 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
     private readonly IQuestionAnswerService _questionAnswerService;
     private readonly IQuestionService _questionService;
     private readonly IQuestionTypeService _questionTypeService;
-
+    private readonly INotificationService _notificationService;
+    private readonly INotificationTypeService _notificationTypeService;
     private readonly ISurveyService _surveyService;
     private readonly ISurveyTypeService _surveyTypeService;
 
     public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService,
-        IQuestionService questionService, IQuestionTypeService questionTypeService, IAnswerService answerService,
-        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService)
+        IQuestionService questionService, IQuestionTypeService questionTypeService,
+        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService, INotificationTypeService notificationTypeService, INotificationService notificationService)
     {
         _surveyService = surveyService;
         _surveyTypeService = surveyTypeService;
@@ -33,6 +38,8 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         _questionTypeService = questionTypeService;
         _questionAnswerService = questionAnswerService;
         _challengeRequestService = challengeRequestService;
+        _notificationTypeService = notificationTypeService;
+        _notificationService = notificationService;
     }
 
     public async Task<PrepareQuestionsCommandResponse> ExecuteAsync(PrepareQuestionsCommand command,
@@ -42,17 +49,17 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
                          await _surveyTypeService.GetSurveyTypeAsync("default");
 
         var newSurveyEntity =
-            new Domain.Entities.Survey.Survey(surveyType!, command.Survey.Content, command.Survey.CreatedBy);
+            new Domain.Entities.Survey.Survey(surveyType!, command.Survey.Content, command.Survey.CreatedBy,command.Survey.Time,command.Survey.TrueQuestionsToWin);
         var surveyResponse = new SurveyResponse(newSurveyEntity.Id, newSurveyEntity.Content, newSurveyEntity.CreatedBy,
-            newSurveyEntity.SurveyTypeId, new List<QuestionResponse>());
+            newSurveyEntity.SurveyTypeId,newSurveyEntity.Time,newSurveyEntity.TrueQuestionsToWin,new List<QuestionResponse>());
         await _surveyService.CreateAsync(newSurveyEntity);
-        var questionEntList = new List<Domain.Entities.Question.Question>();
+        var questionEntList = new List<Question>();
         foreach (var question in command.Survey.Questions)
         {
             var questionType = await _questionTypeService.GetAsync(question.QuestionTypeId) ??
                                await _questionTypeService.GetAsync("default");
             var newQuestionEntity =
-                new Domain.Entities.Question.Question(question.Content, questionType!, newSurveyEntity.Id);
+                new Question(question.Content, questionType!, newSurveyEntity.Id);
             await _questionService.CreateAsync(newQuestionEntity);
             var questionResponse = new QuestionResponse(newQuestionEntity.Id, newQuestionEntity.Content,
                 newQuestionEntity.QuestionTypeId, new List<AnswerResponse>());
@@ -74,8 +81,13 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         var challengeRequest =
             new ChallengeRequest(newSurveyEntity, newSurveyEntity.CreatedBy, command.Survey.ReceivedBy);
         challengeRequest.Activate();
-
+        var receivedAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
+        var senderAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.CreatedBy.ToString());
         await _challengeRequestService.CreateAsync(challengeRequest);
+        var notificationType = await _notificationTypeService.GetNotificationType("Challenge Request") ?? new NotificationType("Challenge Request");
+        var notificationDetail = new NotificationDetail(notificationType, receivedAccount?.FcmToken, receivedAccount.IsAndroidDevice, "Challenge Request", $"{senderAccount.UserName} sent you a challenge request.");
+        var notification = new Notification(command.Survey.ReceivedBy, true,true,notificationDetail);
+        await _notificationService.SendNotification(notification);
         return new PrepareQuestionsCommandResponse(new Result(
             true,
             null,

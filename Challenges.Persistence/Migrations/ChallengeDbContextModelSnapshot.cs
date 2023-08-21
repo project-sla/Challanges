@@ -49,6 +49,110 @@ namespace Challenges.Persistence.Migrations
                     b.ToTable("Genres", "challenge");
                 });
 
+            modelBuilder.Entity("Challenges.Domain.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("NotificationDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReceivedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationDetailId");
+
+                    b.ToTable("Notifications", "challenge");
+                });
+
+            modelBuilder.Entity("Challenges.Domain.Entities.NotificationDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FcmToken")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsAndroidDevice")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("NotificationTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationTypeId");
+
+                    b.ToTable("NotificationDetails", "challenge");
+                });
+
+            modelBuilder.Entity("Challenges.Domain.Entities.NotificationType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NotificationTypes", "challenge");
+                });
+
             modelBuilder.Entity("Challenges.Domain.Entities.Question.Question", b =>
                 {
                     b.Property<Guid>("Id")
@@ -203,6 +307,12 @@ namespace Challenges.Persistence.Migrations
 
                     b.Property<Guid>("SurveyTypeId")
                         .HasColumnType("uuid");
+
+                    b.Property<double>("Time")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("TrueQuestionsToWin")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -366,6 +476,28 @@ namespace Challenges.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags", "challenge");
+                });
+
+            modelBuilder.Entity("Challenges.Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("Challenges.Domain.Entities.NotificationDetail", "NotificationDetail")
+                        .WithMany()
+                        .HasForeignKey("NotificationDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotificationDetail");
+                });
+
+            modelBuilder.Entity("Challenges.Domain.Entities.NotificationDetail", b =>
+                {
+                    b.HasOne("Challenges.Domain.Entities.NotificationType", "NotificationType")
+                        .WithMany()
+                        .HasForeignKey("NotificationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotificationType");
                 });
 
             modelBuilder.Entity("Challenges.Domain.Entities.Question.Question", b =>

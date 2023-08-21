@@ -38,34 +38,7 @@ public class SurveyService : ISurveyService
         await _context.SaveChangesAsync();
         return survey;
     }
-
-    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType,
-        string value, Guid createdBy)
-    {
-        var survey = new Domain.Entities.Survey.Survey(surveyType, value, createdBy);
-        await _context.Surveys.AddAsync(survey);
-        await _context.SaveChangesAsync();
-        return survey;
-    }
-
-    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType,
-        string value)
-    {
-        var survey = new Domain.Entities.Survey.Survey(surveyType, value, Guid.Empty);
-        await _context.Surveys.AddAsync(survey);
-        await _context.SaveChangesAsync();
-        return survey;
-    }
-
-    public async Task<Domain.Entities.Survey.Survey?> CreateAsync(string value)
-    {
-        var survey = new Domain.Entities.Survey.Survey(new Domain.Entities.Survey.SurveyType("default", Guid.Empty),
-            value, Guid.Empty);
-        await _context.Surveys.AddAsync(survey);
-        await _context.SaveChangesAsync();
-        return survey;
-    }
-
+    
 
     public async Task<Domain.Entities.Survey.Survey?> GetAsync(Guid id)
     {

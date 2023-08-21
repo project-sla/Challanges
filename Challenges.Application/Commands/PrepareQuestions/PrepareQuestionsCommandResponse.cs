@@ -12,6 +12,8 @@ public record SurveyResponse(
     string Content,
     Guid CreatedBy,
     Guid SurveyTypeId,
+    double Time,
+    int TrueQuestionsToWin,
     List<QuestionResponse> Questions
 );
 

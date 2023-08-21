@@ -11,12 +11,7 @@ public interface ISurveyService
         Domain.Entities.Survey.SurveyType surveyType);
 
     Task<Domain.Entities.Survey.Survey> CreateAsync(Domain.Entities.Survey.Survey survey);
-
-    Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType, string value,
-        Guid createdBy);
-
-    Task<Domain.Entities.Survey.Survey?> CreateAsync(Domain.Entities.Survey.SurveyType surveyType, string value);
-    Task<Domain.Entities.Survey.Survey?> CreateAsync(string value);
+    
     Task<Domain.Entities.Survey.Survey?> GetAsync(Guid id);
     Task<List<Domain.Entities.Survey.Survey>?>? GetByUserIdAsync(Guid createdBy);
     Task<List<Domain.Entities.Survey.Survey>> GetAsync(string value);

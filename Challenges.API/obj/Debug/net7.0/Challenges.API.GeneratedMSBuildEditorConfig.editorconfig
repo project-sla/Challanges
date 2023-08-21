@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Challenges.API
-build_property.ProjectDir = C:\Users\alper\source\repos\dotnet\Challanges\Challenges.API\
+build_property.ProjectDir = /Users/experilabs/source/repos/Challenges.API/

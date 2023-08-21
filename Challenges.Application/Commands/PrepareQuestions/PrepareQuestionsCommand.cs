@@ -7,6 +7,8 @@ public record PrepareQuestionsCommand(
 ) : ICommand<PrepareQuestionsCommandResponse>;
 
 public record SurveyDto(
+    double Time,
+    int TrueQuestionsToWin,
     string Content,
     Guid CreatedBy,
     Guid ReceivedBy,

@@ -1,6 +1,11 @@
-﻿using Challenges.Application.Extensions.ServiceRegistrations;
+﻿using Challenges.Application.Commands.Account.GetAllAccounts;
+using Challenges.Application.Extensions.ServiceRegistrations;
+using Challenges.Infrastructure.Settings;
 using Challenges.Persistence.Context;
 using Challenges.Persistence.Extensions;
+using Challenges.Persistence.Services.Notification;
+using CorePush.Apple;
+using CorePush.Firebase;
 using FastEndpoints;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
@@ -14,6 +19,10 @@ var rsaKeySection = builder.Configuration.GetSection("RsaKey");
 //var publicKey = rsaKeySection["PublicKey"];
 var privateKey = rsaKeySection["PrivateKey"];
 services.AddPersistenceServices(builder.Configuration);
+services.Configure<FcmNotificationSetting>(builder.Configuration.GetSection("FcmNotificationSetting"));
+services.AddHttpClient<FirebaseSender>();
+services.AddHttpClient<ApnSender>();
+services.AddSingleton<INotificationService, NotificationService>();
 services.AddDbContext<ChallengeDbContext>();
 services.AddApplicationServices();
 services.AddFastEndpoints();
@@ -37,6 +46,8 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy",
             .AllowAnyHeader();
     }));
 var app = builder.Build();
+
+
 app.UseCors("corspolicy");
 app.UseResponseCaching();
 app.UseAuthentication();

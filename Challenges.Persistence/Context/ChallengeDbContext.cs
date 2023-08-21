@@ -23,6 +23,9 @@ public class ChallengeDbContext : DbContext
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Genre> Genres { get; set; }
     public DbSet<ChallengeRequest> ChallengeRequests { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NotificationDetail> NotificationDetails { get; set; }
+    public DbSet<NotificationType> NotificationTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
