@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Challenges.Application.Commands.Account.GetAllAccounts;
+using Microsoft.IdentityModel.Tokens;
 using RestSharp;
 
 namespace Challenges.Application.Helpers.GetAllAccounts;
@@ -27,12 +28,11 @@ public static class GetAllAccountHandler
             true,
             1,
             1));
-
         var response = await client.ExecutePostAsync(request);
         var content = response.Content;
-
+        // if account inside content is null, return null
+        if (content.Contains("[]")) return null;
         var account = JsonSerializer.Deserialize<Account>(content);
-
         return account;
     }
 }
