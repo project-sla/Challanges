@@ -20,8 +20,9 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
     private readonly ISurveyService _surveyService;
     private readonly INotificationTypeService _notificationTypeService;
     private readonly INotificationService _notificationService;
+    private readonly GetAllAccountHandler _getAllAccountHandler;
     public AnswerQuestionsHandler(ISurveyService surveyService, IQuestionService questionService,
-        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService, INotificationTypeService notificationTypeService, INotificationService notificationService)
+        IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService, INotificationTypeService notificationTypeService, INotificationService notificationService, GetAllAccountHandler getAllAccountHandler)
     {
         _surveyService = surveyService;
         _questionService = questionService;
@@ -29,15 +30,16 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
         _challengeRequestService = challengeRequestService;
         _notificationTypeService = notificationTypeService;
         _notificationService = notificationService;
+        _getAllAccountHandler = getAllAccountHandler;
     }
 
     public async Task<AnswerQuestionsResponse> ExecuteAsync(AnswerQuestionsCommand command, CancellationToken ct)
     {
         //var message = new List
-        var receivedBy = await GetAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
+        var receivedBy = await  _getAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
         var notificationType = await _notificationTypeService.GetNotificationType("Survey answered") ??
                                new NotificationType("Survey answered");
-        var notificationDetail = new NotificationDetail(notificationType, receivedBy?.FcmToken, receivedBy!.IsAndroidDevice,
+        var notificationDetail = new NotificationDetail(notificationType, receivedBy?.fcmToken, receivedBy!.isAndroidDevice,
             "Survey answered", "")
         {
             NotificationType = notificationType
@@ -82,7 +84,7 @@ public class AnswerQuestionsHandler : ICommandHandler<AnswerQuestionsCommand, An
             e.DeActivate();
             return e;
         }).ToList();
-        notification.NotificationDetail.Body = $"{receivedBy.UserName} answered your survey.";
+        notification.NotificationDetail.Body = $"{receivedBy.username} answered your survey.";
         await _notificationService.SendNotification(notification);
         var resultData = new ResultData
         {

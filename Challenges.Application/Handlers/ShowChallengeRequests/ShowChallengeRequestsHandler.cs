@@ -10,10 +10,11 @@ namespace Challenges.Application.Handlers.ShowChallengeRequests;
 public class ShowChallengeRequestsHandler : ICommandHandler<ShowChallengeRequestsCommand, ShowChallengeRequestsResponse>
 {
     private readonly IChallengeRequestService _challengeRequestService;
-
-    public ShowChallengeRequestsHandler(IChallengeRequestService challengeRequestService)
+    private readonly GetAllAccountHandler _getAllAccountHandler;
+    public ShowChallengeRequestsHandler(IChallengeRequestService challengeRequestService, GetAllAccountHandler getAllAccountHandler)
     {
         _challengeRequestService = challengeRequestService;
+        _getAllAccountHandler = getAllAccountHandler;
     }
 
     public async Task<ShowChallengeRequestsResponse> ExecuteAsync(ShowChallengeRequestsCommand command,
@@ -23,12 +24,14 @@ public class ShowChallengeRequestsHandler : ICommandHandler<ShowChallengeRequest
         if (challengeRequests is null)
             return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Challenge request not found"));
         var resultObj = new List<ChallengeRequestDto>();
-        var challengeRequestedAccount = await GetAllAccountHandler.GetAllAccounts(command.ReceivedBy.ToString());
+        var challengeRequestedAccount = await _getAllAccountHandler.GetAllAccounts(command.ReceivedBy.ToString());
+        Debug.WriteLine(challengeRequestedAccount);
         if (challengeRequestedAccount is null)
             return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Account not found"));
         foreach (var challenge in challengeRequests)
         {
-            var sender = await GetAllAccountHandler.GetAllAccounts(challenge.CreatedBy.ToString());
+            var sender =  await _getAllAccountHandler.GetAllAccounts(challenge.CreatedBy.ToString());
+            Debug.WriteLine(sender);
             if (sender is null)
                 return new ShowChallengeRequestsResponse(new Result(false, null, null, 404, "Account not found"));
             var challengeObj = new ChallengeRequestDto(

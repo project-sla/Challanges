@@ -4,9 +4,9 @@ using RestSharp;
 
 namespace Challenges.Application.Helpers.GetAllAccounts;
 
-public static class GetAllAccountHandler
+public class GetAllAccountHandler
 {
-    public static async Task<Account?> GetAllAccounts(string id)
+    public virtual async Task<Account?> GetAllAccounts(string id)
     {
         var options = new RestClientOptions("https://10.1.23.200:7107")
         {
@@ -26,9 +26,20 @@ public static class GetAllAccountHandler
             1));
         var response = await client.ExecutePostAsync(request);
         var content = response.Content;
+
         // if account inside content is null, return null
         if (content.Contains("[]")) return null;
-        var account = JsonSerializer.Deserialize<Account>(content);
+
+        // Define JSON serializer options
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+
+        var accountsWrapper = JsonSerializer.Deserialize<AccountsWrapper>(content, jsonOptions);
+        var account = accountsWrapper?.accounts.FirstOrDefault();
+
         return account;
     }
 }
+

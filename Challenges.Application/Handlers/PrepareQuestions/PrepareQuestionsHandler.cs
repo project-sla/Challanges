@@ -25,11 +25,11 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
     private readonly IQuestionTypeService _questionTypeService;
     private readonly ISurveyService _surveyService;
     private readonly ISurveyTypeService _surveyTypeService;
-
+    private readonly GetAllAccountHandler _getAllAccountHandler;
     public PrepareQuestionsHandler(ISurveyService surveyService, ISurveyTypeService surveyTypeService,
         IQuestionService questionService, IQuestionTypeService questionTypeService,
         IQuestionAnswerService questionAnswerService, IChallengeRequestService challengeRequestService,
-        INotificationTypeService notificationTypeService, INotificationService notificationService)
+        INotificationTypeService notificationTypeService, INotificationService notificationService, GetAllAccountHandler getAllAccountHandler)
     {
         _surveyService = surveyService;
         _surveyTypeService = surveyTypeService;
@@ -39,6 +39,7 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         _challengeRequestService = challengeRequestService;
         _notificationTypeService = notificationTypeService;
         _notificationService = notificationService;
+        _getAllAccountHandler = getAllAccountHandler;
     }
 
     public async Task<PrepareQuestionsCommandResponse> ExecuteAsync(PrepareQuestionsCommand command,
@@ -82,8 +83,8 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         var challengeRequest =
             new ChallengeRequest(newSurveyEntity, newSurveyEntity.CreatedBy, command.Survey.ReceivedBy);
         challengeRequest.Activate();
-        var receivedAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
-        var senderAccount = await GetAllAccountHandler.GetAllAccounts(command.Survey.CreatedBy.ToString());
+        var receivedAccount = await _getAllAccountHandler.GetAllAccounts(command.Survey.ReceivedBy.ToString());
+        var senderAccount = await _getAllAccountHandler.GetAllAccounts(command.Survey.CreatedBy.ToString());
         if (receivedAccount is null || senderAccount is null)
             return new PrepareQuestionsCommandResponse(new Result(
                 false,
@@ -95,9 +96,9 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
         await _challengeRequestService.CreateAsync(challengeRequest);
         var notificationType = await _notificationTypeService.GetNotificationType("Challenge Request") ??
                                new NotificationType("Challenge Request");
-        var notificationDetail = new NotificationDetail(notificationType, receivedAccount.FcmToken,
-            receivedAccount.IsAndroidDevice, "Challenge Request",
-            $"{senderAccount.UserName} sent you a challenge request.")
+        var notificationDetail = new NotificationDetail(notificationType, receivedAccount.fcmToken,
+            receivedAccount.isAndroidDevice, "Challenge Request",
+            $"{senderAccount.username} sent you a challenge request.")
         {
             NotificationType = notificationType
         };
