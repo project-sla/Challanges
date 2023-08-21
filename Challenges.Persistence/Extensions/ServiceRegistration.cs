@@ -29,7 +29,8 @@ public static class ServiceRegistration
         services.AddScoped<IAnswerService, AnswerService>();
         services.AddScoped<IChallengeRequestService, ChallengeRequestService>();
         services.AddScoped<INotificationService, NotificationService>();
-        
+        services.AddScoped<INotificationTypeService, NotificationTypeService>();
+        services.AddScoped<INotificationDetailService, NotificationDetailService>();
         services.AddDbContext<ChallengeDbContext>(
             options => options.UseNpgsql(configuration.GetSection("ConnectionStrings:DefaultConnection").Value)
         );
