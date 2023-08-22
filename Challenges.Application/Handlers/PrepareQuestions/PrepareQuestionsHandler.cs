@@ -106,7 +106,7 @@ public class PrepareQuestionsHandler : ICommandHandler<PrepareQuestionsCommand, 
             {
                 NotificationDetail = notificationDetail
             };
-        await _notificationService.SendNotification(notification);
+        //await _notificationService.SendNotification(notification);
         return new PrepareQuestionsCommandResponse(new Result(
             true,
             null,
